@@ -1,4 +1,4 @@
-import { AbpHttpInterceptor, RefreshTokenService, AbpHttpConfigurationService } from 'abp-ng2-module';
+﻿import { AbpHttpInterceptor, RefreshTokenService, AbpHttpConfigurationService } from 'abp-ng2-module';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import * as ApiServiceProxies from './service-proxies';
@@ -6,7 +6,10 @@ import { ZeroRefreshTokenService } from '@account/auth/zero-refresh-token.servic
 import { ZeroTemplateHttpConfigurationService } from './zero-template-http-configuration.service';
 
 @NgModule({
-    providers: [
+    providers: [      
+        ApiServiceProxies.SubDepartmentsServiceProxy,        
+        ApiServiceProxies.DepartmentsServiceProxy,        
+        ApiServiceProxies.EmployeeInformationMastersServiceProxy,        
         ApiServiceProxies.AuditLogServiceProxy,
         ApiServiceProxies.CachingServiceProxy,
         ApiServiceProxies.ChatServiceProxy,

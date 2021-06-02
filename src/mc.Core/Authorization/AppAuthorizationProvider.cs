@@ -29,6 +29,27 @@ namespace mc.Authorization
             //COMMON PERMISSIONS (FOR BOTH OF TENANTS AND HOST)
 
             var pages = context.GetPermissionOrNull(AppPermissions.Pages) ?? context.CreatePermission(AppPermissions.Pages, L("Pages"));
+
+            var designations = pages.CreateChildPermission(AppPermissions.Pages_Designations, L("Designations"));
+            designations.CreateChildPermission(AppPermissions.Pages_Designations_Create, L("CreateNewDesignation"));
+            designations.CreateChildPermission(AppPermissions.Pages_Designations_Edit, L("EditDesignation"));
+            designations.CreateChildPermission(AppPermissions.Pages_Designations_Delete, L("DeleteDesignation"));
+
+            var subDepartments = pages.CreateChildPermission(AppPermissions.Pages_SubDepartments, L("SubDepartments"));
+            subDepartments.CreateChildPermission(AppPermissions.Pages_SubDepartments_Create, L("CreateNewSubDepartment"));
+            subDepartments.CreateChildPermission(AppPermissions.Pages_SubDepartments_Edit, L("EditSubDepartment"));
+            subDepartments.CreateChildPermission(AppPermissions.Pages_SubDepartments_Delete, L("DeleteSubDepartment"));
+
+            var departments = pages.CreateChildPermission(AppPermissions.Pages_Departments, L("Departments"));
+            departments.CreateChildPermission(AppPermissions.Pages_Departments_Create, L("CreateNewDepartment"));
+            departments.CreateChildPermission(AppPermissions.Pages_Departments_Edit, L("EditDepartment"));
+            departments.CreateChildPermission(AppPermissions.Pages_Departments_Delete, L("DeleteDepartment"));
+
+            var employeeInformationMasters = pages.CreateChildPermission(AppPermissions.Pages_EmployeeInformationMasters, L("EmployeeInformationMasters"));
+            employeeInformationMasters.CreateChildPermission(AppPermissions.Pages_EmployeeInformationMasters_Create, L("CreateNewEmployeeInformationMaster"));
+            employeeInformationMasters.CreateChildPermission(AppPermissions.Pages_EmployeeInformationMasters_Edit, L("EditEmployeeInformationMaster"));
+            employeeInformationMasters.CreateChildPermission(AppPermissions.Pages_EmployeeInformationMasters_Delete, L("DeleteEmployeeInformationMaster"));
+
             pages.CreateChildPermission(AppPermissions.Pages_DemoUiComponents, L("DemoUiComponents"));
 
             var administration = pages.CreateChildPermission(AppPermissions.Pages_Administration, L("Administration"));

@@ -1,0 +1,712 @@
+﻿<div
+  bsModal
+  #createOrEditModal="bs-modal"
+  class="modal fade"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="createOrEditModal"
+  aria-hidden="true"
+  [config]="{ backdrop: 'static' }"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <form *ngIf="active" #employeeInformationMasterForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+        <div class="modal-header">
+          <h4 class="modal-title">
+            <span *ngIf="employeeInformationMaster.id">{{ l('EditEmployeeInformation') }}</span>
+            <span *ngIf="!employeeInformationMaster.id">{{ l('CreateNewEmployeeInformation') }}</span>
+          </h4>
+          <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="EmployeeInformationMaster_EmpId">{{ l('EmpId') }} *</label>
+            <input
+              type="text"
+              #EmployeeInformationMaster_EmpId="ngModel"
+              id="EmployeeInformationMaster_EmpId"
+              class="form-control"
+              [(ngModel)]="employeeInformationMaster.empId"
+              name="EmpId"
+              minlength="0"
+              maxlength="10"
+              required
+            />
+            <validation-messages [formCtrl]="EmployeeInformationMaster_EmpId"></validation-messages>
+          </div>
+
+          <div class="form-group">
+            <label for="EmployeeInformationMaster_BioId">{{ l('BioId') }}</label>
+            <input
+              type="number"
+              #EmployeeInformationMaster_BioId="ngModel"
+              id="EmployeeInformationMaster_BioId"
+              class="form-control"
+              [(ngModel)]="employeeInformationMaster.bioId"
+              name="BioId"
+            />
+            <validation-messages [formCtrl]="EmployeeInformationMaster_BioId"></validation-messages>
+          </div>
+
+          <div class="form-group">
+            <label for="EmployeeInformationMaster_InternalId">{{ l('InternalId') }}</label>
+            <input
+              type="text"
+              #EmployeeInformationMaster_InternalId="ngModel"
+              id="EmployeeInformationMaster_InternalId"
+              class="form-control"
+              [(ngModel)]="employeeInformationMaster.internalId"
+              name="InternalId"
+              minlength="0"
+              maxlength="100"
+            />
+            <validation-messages [formCtrl]="EmployeeInformationMaster_InternalId"></validation-messages>
+          </div>
+
+          <div class="form-group">
+            <label for="EmployeeInformationMaster_Doc">{{ l('Doc') }}</label>
+            <input
+              class="form-control m-input"
+              #EmployeeInformationMaster_Doc
+              type="datetime"
+              bsDatepicker
+              datePickerLuxonModifier
+              [(date)]="employeeInformationMaster.doc"
+              id="EmployeeInformationMaster_Doc"
+              name="EmployeeInformationMaster_Doc"
+            />
+            <validation-messages [formCtrl]="EmployeeInformationMaster_Doc"></validation-messages>
+          </div>
+
+          <div class="form-group">
+            <label for="EmployeeInformationMaster_Name">{{ l('Name') }}</label>
+            <input
+              type="text"
+              #EmployeeInformationMaster_Name="ngModel"
+              id="EmployeeInformationMaster_Name"
+              class="form-control"
+              [(ngModel)]="employeeInformationMaster.name"
+              name="Name"
+              minlength="0"
+              maxlength="100"
+            />
+            <validation-messages [formCtrl]="EmployeeInformationMaster_Name"></validation-messages>
+          </div>
+
+          <div class="form-group">
+            <label for="EmployeeInformationMaster_ForH">{{ l('F or H') }}</label>
+            <input
+              type="text"
+              #EmployeeInformationMaster_ForH="ngModel"
+              id="EmployeeInformationMaster_ForH"
+              class="form-control"
+              [(ngModel)]="employeeInformationMaster.forH"
+              name="ForH"
+              minlength="0"
+              maxlength="100"
+            />
+            <validation-messages [formCtrl]="EmployeeInformationMaster_ForH"></validation-messages>
+          </div>
+
+          <div class="form-group">
+            <label for="EmployeeInformationMaster_Dob">{{ l('Dob') }}</label>
+            <input
+              class="form-control m-input"
+              #EmployeeInformationMaster_Dob
+              type="datetime"
+              bsDatepicker
+              datePickerLuxonModifier
+              [(date)]="employeeInformationMaster.dob"
+              id="EmployeeInformationMaster_Dob"
+              name="EmployeeInformationMaster_Dob"
+            />
+            <validation-messages [formCtrl]="EmployeeInformationMaster_Dob"></validation-messages>
+          </div>
+
+          <div class="form-group">
+            <label for="EmployeeInformationMaster_PresentAddress">{{ l('PresentAddress') }}</label>
+            <input
+              type="text"
+              #EmployeeInformationMaster_PresentAddress="ngModel"
+              id="EmployeeInformationMaster_PresentAddress"
+              class="form-control"
+              [(ngModel)]="employeeInformationMaster.presentAddress"
+              name="PresentAddress"
+              minlength="0"
+              maxlength="300"
+            />
+            <validation-messages [formCtrl]="EmployeeInformationMaster_PresentAddress"></validation-messages>
+          </div>
+
+          <div class="form-group">
+            <label for="EmployeeInformationMaster_PermanentAddress">{{ l('PermanentAddress') }}</label>
+            <input
+              type="text"
+              #EmployeeInformationMaster_PermanentAddress="ngModel"
+              id="EmployeeInformationMaster_PermanentAddress"
+              class="form-control"
+              [(ngModel)]="employeeInformationMaster.permanentAddress"
+              name="PermanentAddress"
+              minlength="0"
+              maxlength="300"
+            />
+            <validation-messages [formCtrl]="EmployeeInformationMaster_PermanentAddress"></validation-messages>
+          </div>
+
+          <div class="form-group">
+            <label for="EmployeeInformationMaster_Gender">{{ l('Gender') }}</label>
+            <input
+              type="text"
+              #EmployeeInformationMaster_Gender="ngModel"
+              id="EmployeeInformationMaster_Gender"
+              class="form-control"
+              [(ngModel)]="employeeInformationMaster.gender"
+              name="Gender"
+              minlength="0"
+              maxlength="1"
+            />
+            <validation-messages [formCtrl]="EmployeeInformationMaster_Gender"></validation-messages>
+          </div>
+
+          <div class="form-group">
+            <label for="EmployeeInformationMaster_ContactNo">{{ l('ContactNo') }}</label>
+            <input
+              type="text"
+              #EmployeeInformationMaster_ContactNo="ngModel"
+              id="EmployeeInformationMaster_ContactNo"
+              class="form-control"
+              [(ngModel)]="employeeInformationMaster.contactNo"
+              name="ContactNo"
+              minlength="0"
+              maxlength="15"
+            />
+            <validation-messages [formCtrl]="EmployeeInformationMaster_ContactNo"></validation-messages>
+          </div>
+
+          <div class="form-group">
+            <label for="EmployeeInformationMaster_AltContactNo">{{ l('AltContactNo') }}</label>
+            <input
+              type="text"
+              #EmployeeInformationMaster_AltContactNo="ngModel"
+              id="EmployeeInformationMaster_AltContactNo"
+              class="form-control"
+              [(ngModel)]="employeeInformationMaster.altContactNo"
+              name="AltContactNo"
+              minlength="0"
+              maxlength="15"
+            />
+            <validation-messages [formCtrl]="EmployeeInformationMaster_AltContactNo"></validation-messages>
+          </div>
+
+          <div class="form-group">
+            <label for="EmployeeInformationMaster_MaritalStatus">{{ l('MaritalStatus') }}</label>
+            <input
+              type="text"
+              #EmployeeInformationMaster_MaritalStatus="ngModel"
+              id="EmployeeInformationMaster_MaritalStatus"
+              class="form-control"
+              [(ngModel)]="employeeInformationMaster.maritalStatus"
+              name="MaritalStatus"
+              minlength="0"
+              maxlength="1"
+            />
+            <validation-messages [formCtrl]="EmployeeInformationMaster_MaritalStatus"></validation-messages>
+          </div>
+
+          <div class="form-group">
+            <label for="EmployeeInformationMaster_NoOfDependents">{{ l('NoOfDependents') }}</label>
+            <input
+              type="number"
+              #EmployeeInformationMaster_NoOfDependents="ngModel"
+              id="EmployeeInformationMaster_NoOfDependents"
+              class="form-control"
+              [(ngModel)]="employeeInformationMaster.noOfDependents"
+              name="NoOfDependents"
+            />
+            <validation-messages [formCtrl]="EmployeeInformationMaster_NoOfDependents"></validation-messages>
+          </div>
+
+          <div class="form-group">
+            <label for="EmployeeInformationMaster_ConfirmationDate">{{ l('ConfirmationDate') }}</label>
+            <input
+              class="form-control m-input"
+              #EmployeeInformationMaster_ConfirmationDate
+              type="datetime"
+              bsDatepicker
+              datePickerLuxonModifier
+              [(date)]="employeeInformationMaster.confirmationDate"
+              id="EmployeeInformationMaster_ConfirmationDate"
+              name="EmployeeInformationMaster_ConfirmationDate"
+            />
+            <validation-messages [formCtrl]="EmployeeInformationMaster_ConfirmationDate"></validation-messages>
+          </div>
+
+          <div class="form-group">
+            <label for="EmployeeInformationMaster_DOJ">{{ l('DOJ') }}</label>
+            <input
+              class="form-control m-input"
+              #EmployeeInformationMaster_DOJ
+              type="datetime"
+              bsDatepicker
+              datePickerLuxonModifier
+              [(date)]="employeeInformationMaster.doj"
+              id="EmployeeInformationMaster_DOJ"
+              name="EmployeeInformationMaster_DOJ"
+            />
+            <validation-messages [formCtrl]="EmployeeInformationMaster_DOJ"></validation-messages>
+          </div>
+
+          <div class="form-group">
+            <label for="EmployeeInformationMaster_IhExp">{{ l('IhExp') }}</label>
+            <input
+              type="text"
+              #EmployeeInformationMaster_IhExp="ngModel"
+              id="EmployeeInformationMaster_IhExp"
+              class="form-control"
+              [(ngModel)]="employeeInformationMaster.ihExp"
+              name="IhExp"
+              minlength="0"
+              maxlength="50"
+            />
+            <validation-messages [formCtrl]="EmployeeInformationMaster_IhExp"></validation-messages>
+          </div>
+
+          <div class="form-group">
+            <label for="EmployeeInformationMaster_TotalExp">{{ l('TotalExp') }}</label>
+            <input
+              type="number"
+              #EmployeeInformationMaster_TotalExp="ngModel"
+              id="EmployeeInformationMaster_TotalExp"
+              class="form-control"
+              [(ngModel)]="employeeInformationMaster.totalExp"
+              name="TotalExp"
+            />
+            <validation-messages [formCtrl]="EmployeeInformationMaster_TotalExp"></validation-messages>
+          </div>
+
+          <div class="form-group">
+            <label for="EmployeeInformationMaster_PfNo">{{ l('PfNo') }}</label>
+            <input
+              type="text"
+              #EmployeeInformationMaster_PfNo="ngModel"
+              id="EmployeeInformationMaster_PfNo"
+              class="form-control"
+              [(ngModel)]="employeeInformationMaster.pfNo"
+              name="PfNo"
+              minlength="0"
+              maxlength="50"
+            />
+            <validation-messages [formCtrl]="EmployeeInformationMaster_PfNo"></validation-messages>
+          </div>
+
+          <div class="form-group">
+            <label for="EmployeeInformationMaster_EsiNo">{{ l('EsiNo') }}</label>
+            <input
+              type="text"
+              #EmployeeInformationMaster_EsiNo="ngModel"
+              id="EmployeeInformationMaster_EsiNo"
+              class="form-control"
+              [(ngModel)]="employeeInformationMaster.esiNo"
+              name="EsiNo"
+              minlength="0"
+              maxlength="50"
+            />
+            <validation-messages [formCtrl]="EmployeeInformationMaster_EsiNo"></validation-messages>
+          </div>
+
+          <div class="form-group">
+            <label for="EmployeeInformationMaster_AcNo">{{ l('AcNo') }}</label>
+            <input
+              type="text"
+              #EmployeeInformationMaster_AcNo="ngModel"
+              id="EmployeeInformationMaster_AcNo"
+              class="form-control"
+              [(ngModel)]="employeeInformationMaster.acNo"
+              name="AcNo"
+              minlength="0"
+              maxlength="14"
+            />
+            <validation-messages [formCtrl]="EmployeeInformationMaster_AcNo"></validation-messages>
+          </div>
+
+          <div class="form-group">
+            <label for="EmployeeInformationMaster_PpNo">{{ l('PpNo') }}</label>
+            <input
+              type="text"
+              #EmployeeInformationMaster_PpNo="ngModel"
+              id="EmployeeInformationMaster_PpNo"
+              class="form-control"
+              [(ngModel)]="employeeInformationMaster.ppNo"
+              name="PpNo"
+              minlength="0"
+              maxlength="20"
+            />
+            <validation-messages [formCtrl]="EmployeeInformationMaster_PpNo"></validation-messages>
+          </div>
+
+          <div class="form-group">
+            <label for="EmployeeInformationMaster_PAN">{{ l('PAN') }}</label>
+            <input
+              type="text"
+              #EmployeeInformationMaster_PAN="ngModel"
+              id="EmployeeInformationMaster_PAN"
+              class="form-control"
+              [(ngModel)]="employeeInformationMaster.pan"
+              name="PAN"
+              minlength="0"
+              maxlength="10"
+            />
+            <validation-messages [formCtrl]="EmployeeInformationMaster_PAN"></validation-messages>
+          </div>
+
+          <div class="form-group">
+            <label for="EmployeeInformationMaster_BG">{{ l('BG') }}</label>
+            <input
+              type="text"
+              #EmployeeInformationMaster_BG="ngModel"
+              id="EmployeeInformationMaster_BG"
+              class="form-control"
+              [(ngModel)]="employeeInformationMaster.bg"
+              name="BG"
+              minlength="0"
+              maxlength="15"
+            />
+            <validation-messages [formCtrl]="EmployeeInformationMaster_BG"></validation-messages>
+          </div>
+
+          <div class="form-group">
+            <label for="EmployeeInformationMaster_CL">{{ l('CL') }}</label>
+            <input
+              type="number"
+              #EmployeeInformationMaster_CL="ngModel"
+              id="EmployeeInformationMaster_CL"
+              class="form-control"
+              [(ngModel)]="employeeInformationMaster.cl"
+              name="CL"
+            />
+            <validation-messages [formCtrl]="EmployeeInformationMaster_CL"></validation-messages>
+          </div>
+
+          <div class="form-group">
+            <label for="EmployeeInformationMaster_EL">{{ l('EL') }}</label>
+            <input
+              type="number"
+              #EmployeeInformationMaster_EL="ngModel"
+              id="EmployeeInformationMaster_EL"
+              class="form-control"
+              [(ngModel)]="employeeInformationMaster.el"
+              name="EL"
+            />
+            <validation-messages [formCtrl]="EmployeeInformationMaster_EL"></validation-messages>
+          </div>
+
+          <div class="form-group">
+            <label for="EmployeeInformationMaster_SL">{{ l('SL') }}</label>
+            <input
+              type="number"
+              #EmployeeInformationMaster_SL="ngModel"
+              id="EmployeeInformationMaster_SL"
+              class="form-control"
+              [(ngModel)]="employeeInformationMaster.sl"
+              name="SL"
+            />
+            <validation-messages [formCtrl]="EmployeeInformationMaster_SL"></validation-messages>
+          </div>
+
+          <div class="form-group">
+            <label for="EmployeeInformationMaster_BasicSalary">{{ l('BasicSalary') }}</label>
+            <input
+              type="number"
+              #EmployeeInformationMaster_BasicSalary="ngModel"
+              id="EmployeeInformationMaster_BasicSalary"
+              class="form-control"
+              [(ngModel)]="employeeInformationMaster.basicSalary"
+              name="BasicSalary"
+            />
+            <validation-messages [formCtrl]="EmployeeInformationMaster_BasicSalary"></validation-messages>
+          </div>
+
+          <div class="form-group">
+            <label for="EmployeeInformationMaster_DA">{{ l('DA') }}</label>
+            <input
+              type="number"
+              #EmployeeInformationMaster_DA="ngModel"
+              id="EmployeeInformationMaster_DA"
+              class="form-control"
+              [(ngModel)]="employeeInformationMaster.da"
+              name="DA"
+            />
+            <validation-messages [formCtrl]="EmployeeInformationMaster_DA"></validation-messages>
+          </div>
+
+          <div class="form-group">
+            <label for="EmployeeInformationMaster_HRA">{{ l('HRA') }}</label>
+            <input
+              type="number"
+              #EmployeeInformationMaster_HRA="ngModel"
+              id="EmployeeInformationMaster_HRA"
+              class="form-control"
+              [(ngModel)]="employeeInformationMaster.hra"
+              name="HRA"
+            />
+            <validation-messages [formCtrl]="EmployeeInformationMaster_HRA"></validation-messages>
+          </div>
+
+          <div class="form-group">
+            <label for="EmployeeInformationMaster_Conveyance">{{ l('Conveyance') }}</label>
+            <input
+              type="number"
+              #EmployeeInformationMaster_Conveyance="ngModel"
+              id="EmployeeInformationMaster_Conveyance"
+              class="form-control"
+              [(ngModel)]="employeeInformationMaster.conveyance"
+              name="Conveyance"
+            />
+            <validation-messages [formCtrl]="EmployeeInformationMaster_Conveyance"></validation-messages>
+          </div>
+
+          <div class="form-group">
+            <label for="EmployeeInformationMaster_Incentive">{{ l('Incentive') }}</label>
+            <input
+              type="number"
+              #EmployeeInformationMaster_Incentive="ngModel"
+              id="EmployeeInformationMaster_Incentive"
+              class="form-control"
+              [(ngModel)]="employeeInformationMaster.incentive"
+              name="Incentive"
+            />
+            <validation-messages [formCtrl]="EmployeeInformationMaster_Incentive"></validation-messages>
+          </div>
+
+          <div class="form-group">
+            <label for="EmployeeInformationMaster_MedicalAllowance">{{ l('MedicalAllowance') }}</label>
+            <input
+              type="number"
+              #EmployeeInformationMaster_MedicalAllowance="ngModel"
+              id="EmployeeInformationMaster_MedicalAllowance"
+              class="form-control"
+              [(ngModel)]="employeeInformationMaster.medicalAllowance"
+              name="MedicalAllowance"
+            />
+            <validation-messages [formCtrl]="EmployeeInformationMaster_MedicalAllowance"></validation-messages>
+          </div>
+
+          <div class="form-group">
+            <label for="EmployeeInformationMaster_OtherAllowances">{{ l('OtherAllowances') }}</label>
+            <input
+              type="number"
+              #EmployeeInformationMaster_OtherAllowances="ngModel"
+              id="EmployeeInformationMaster_OtherAllowances"
+              class="form-control"
+              [(ngModel)]="employeeInformationMaster.otherAllowances"
+              name="OtherAllowances"
+            />
+            <validation-messages [formCtrl]="EmployeeInformationMaster_OtherAllowances"></validation-messages>
+          </div>
+
+          <div class="form-group">
+            <label for="EmployeeInformationMaster_TotalSalary">{{ l('TotalSalary') }}</label>
+            <input
+              type="number"
+              #EmployeeInformationMaster_TotalSalary="ngModel"
+              id="EmployeeInformationMaster_TotalSalary"
+              class="form-control"
+              [(ngModel)]="employeeInformationMaster.totalSalary"
+              name="TotalSalary"
+            />
+            <validation-messages [formCtrl]="EmployeeInformationMaster_TotalSalary"></validation-messages>
+          </div>
+
+          <div class="form-group">
+            <label for="EmployeeInformationMaster_Photo">{{ l('Photo') }}</label>
+            <input
+              type="text"
+              #EmployeeInformationMaster_Photo="ngModel"
+              id="EmployeeInformationMaster_Photo"
+              class="form-control"
+              [(ngModel)]="employeeInformationMaster.photo"
+              name="Photo"
+            />
+            <validation-messages [formCtrl]="EmployeeInformationMaster_Photo"></validation-messages>
+          </div>
+
+          <div class="form-group">
+            <label for="EmployeeInformationMaster_UanNo">{{ l('UanNo') }}</label>
+            <input
+              type="number"
+              #EmployeeInformationMaster_UanNo="ngModel"
+              id="EmployeeInformationMaster_UanNo"
+              class="form-control"
+              [(ngModel)]="employeeInformationMaster.uanNo"
+              name="UanNo"
+            />
+            <validation-messages [formCtrl]="EmployeeInformationMaster_UanNo"></validation-messages>
+          </div>
+
+          <br />
+          <div class="m-checkbox-list">
+            <label for="EmployeeInformationMaster_IsActive" class="kt-checkbox">
+              <input
+                id="EmployeeInformationMaster_IsActive"
+                #EmployeeInformationMaster_IsActive="ngModel"
+                type="checkbox"
+                name="IsActive"
+                [(ngModel)]="employeeInformationMaster.isActive"
+              />
+              {{ l('IsActive') }}
+              <span></span>
+            </label>
+            <validation-messages [formCtrl]="EmployeeInformationMaster_IsActive"></validation-messages>
+          </div>
+
+          <div class="form-group">
+            <label for="EmployeeInformationMaster_EmployeementUnder">{{ l('EmployeementUnder') }}</label>
+            <input
+              type="text"
+              #EmployeeInformationMaster_EmployeementUnder="ngModel"
+              id="EmployeeInformationMaster_EmployeementUnder"
+              class="form-control"
+              [(ngModel)]="employeeInformationMaster.employeementUnder"
+              name="EmployeementUnder"
+              minlength="0"
+              maxlength="50"
+            />
+            <validation-messages [formCtrl]="EmployeeInformationMaster_EmployeementUnder"></validation-messages>
+          </div>
+
+          <div class="form-group">
+            <label for="EmployeeInformationMaster_Division">{{ l('Division') }}</label>
+            <input
+              type="text"
+              #EmployeeInformationMaster_Division="ngModel"
+              id="EmployeeInformationMaster_Division"
+              class="form-control"
+              [(ngModel)]="employeeInformationMaster.division"
+              name="Division"
+              minlength="0"
+              maxlength="10"
+            />
+            <validation-messages [formCtrl]="EmployeeInformationMaster_Division"></validation-messages>
+          </div>
+
+          <div class="form-group">
+            <label for="EmployeeInformationMaster_ContractorId">{{ l('ContractorId') }}</label>
+            <input
+              type="number"
+              #EmployeeInformationMaster_ContractorId="ngModel"
+              id="EmployeeInformationMaster_ContractorId"
+              class="form-control"
+              [(ngModel)]="employeeInformationMaster.contractorId"
+              name="ContractorId"
+            />
+            <validation-messages [formCtrl]="EmployeeInformationMaster_ContractorId"></validation-messages>
+          </div>
+
+          <br />
+          <div class="m-checkbox-list">
+            <label for="EmployeeInformationMaster_MessBill" class="kt-checkbox">
+              <input
+                id="EmployeeInformationMaster_MessBill"
+                #EmployeeInformationMaster_MessBill="ngModel"
+                type="checkbox"
+                name="MessBill"
+                [(ngModel)]="employeeInformationMaster.messBill"
+              />
+              {{ l('MessBill') }}
+              <span></span>
+            </label>
+            <validation-messages [formCtrl]="EmployeeInformationMaster_MessBill"></validation-messages>
+          </div>
+
+          <br />
+          <div class="m-checkbox-list">
+            <label for="EmployeeInformationMaster_Onroll" class="kt-checkbox">
+              <input
+                id="EmployeeInformationMaster_Onroll"
+                #EmployeeInformationMaster_Onroll="ngModel"
+                type="checkbox"
+                name="Onroll"
+                [(ngModel)]="employeeInformationMaster.onroll"
+              />
+              {{ l('Onroll') }}
+              <span></span>
+            </label>
+            <validation-messages [formCtrl]="EmployeeInformationMaster_Onroll"></validation-messages>
+          </div>
+
+          <div class="form-group">
+            <label for="EmployeeInformationMaster_NameInTelugu">{{ l('NameInTelugu') }}</label>
+            <input
+              type="text"
+              #EmployeeInformationMaster_NameInTelugu="ngModel"
+              id="EmployeeInformationMaster_NameInTelugu"
+              class="form-control"
+              [(ngModel)]="employeeInformationMaster.nameInTelugu"
+              name="NameInTelugu"
+              minlength="0"
+              maxlength="100"
+            />
+            <validation-messages [formCtrl]="EmployeeInformationMaster_NameInTelugu"></validation-messages>
+          </div>
+
+          <div class="form-group">
+            <label for="EmployeeInformationMaster_RjDate">{{ l('RjDate') }}</label>
+            <input
+              class="form-control m-input"
+              #EmployeeInformationMaster_RjDate
+              type="datetime"
+              bsDatepicker
+              datePickerLuxonModifier
+              [(date)]="employeeInformationMaster.rjDate"
+              id="EmployeeInformationMaster_RjDate"
+              name="EmployeeInformationMaster_RjDate"
+            />
+            <validation-messages [formCtrl]="EmployeeInformationMaster_RjDate"></validation-messages>
+          </div>
+
+          <div class="form-group">
+            <label for="EmployeeInformationMaster_Document">{{ l('Document') }}</label>
+            <input
+              type="text"
+              #EmployeeInformationMaster_Document="ngModel"
+              id="EmployeeInformationMaster_Document"
+              class="form-control"
+              [(ngModel)]="employeeInformationMaster.document"
+              name="Document"
+            />
+            <validation-messages [formCtrl]="EmployeeInformationMaster_Document"></validation-messages>
+          </div>
+
+          <div class="form-group">
+            <label for="EmployeeInformationMaster_Extension">{{ l('Extension') }}</label>
+            <input
+              type="text"
+              #EmployeeInformationMaster_Extension="ngModel"
+              id="EmployeeInformationMaster_Extension"
+              class="form-control"
+              [(ngModel)]="employeeInformationMaster.extension"
+              name="Extension"
+              minlength="0"
+              maxlength="10"
+            />
+            <validation-messages [formCtrl]="EmployeeInformationMaster_Extension"></validation-messages>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{ l('Cancel') }}</button>
+          <button
+            type="submit"
+            class="btn btn-primary blue"
+            [disabled]="!employeeInformationMasterForm.form.valid"
+            [buttonBusy]="saving"
+            [busyText]="l('SavingWithThreeDot')"
+          >
+            <i class="fa fa-save"></i> <span>{{ l('Save') }}</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

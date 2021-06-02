@@ -1,0 +1,235 @@
+﻿<div
+  bsModal
+  #createOrEditModal="bs-modal"
+  class="modal fade"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="createOrEditModal"
+  aria-hidden="true"
+  [config]="{ backdrop: 'static' }"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">
+          <span>{{ l('Details') }}</span>
+        </h4>
+        <button type="button" class="close" (click)="close()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-6 mb-3">
+            <h6>{{ l('EmpId') }} :</h6>
+            {{ item.employeeInformationMaster.empId }}
+          </div>
+          <div class="col-6 mb-3">
+            <h6>{{ l('BioId') }} :</h6>
+            {{ item.employeeInformationMaster.bioId }}
+          </div>
+          <div class="col-6 mb-3">
+            <h6>{{ l('InternalId') }} :</h6>
+            {{ item.employeeInformationMaster.internalId }}
+          </div>
+          <div class="col-6 mb-3">
+            <h6>{{ l('Doc') }} :</h6>
+            {{ item.employeeInformationMaster.doc | luxonFormat: 'yyyy-LL-dd HH:mm:ss' }}
+          </div>
+          <div class="col-6 mb-3">
+            <h6>{{ l('Name') }} :</h6>
+            {{ item.employeeInformationMaster.name }}
+          </div>
+          <div class="col-6 mb-3">
+            <h6>{{ l('ForH') }} :</h6>
+            {{ item.employeeInformationMaster.forH }}
+          </div>
+          <div class="col-6 mb-3">
+            <h6>{{ l('Dob') }} :</h6>
+            {{ item.employeeInformationMaster.dob | luxonFormat: 'yyyy-LL-dd HH:mm:ss' }}
+          </div>
+          <div class="col-6 mb-3">
+            <h6>{{ l('PresentAddress') }} :</h6>
+            {{ item.employeeInformationMaster.presentAddress }}
+          </div>
+          <div class="col-6 mb-3">
+            <h6>{{ l('PermanentAddress') }} :</h6>
+            {{ item.employeeInformationMaster.permanentAddress }}
+          </div>
+          <div class="col-6 mb-3">
+            <h6>{{ l('Gender') }} :</h6>
+            {{ item.employeeInformationMaster.gender }}
+          </div>
+          <div class="col-6 mb-3">
+            <h6>{{ l('ContactNo') }} :</h6>
+            {{ item.employeeInformationMaster.contactNo }}
+          </div>
+          <div class="col-6 mb-3">
+            <h6>{{ l('AltContactNo') }} :</h6>
+            {{ item.employeeInformationMaster.altContactNo }}
+          </div>
+          <div class="col-6 mb-3">
+            <h6>{{ l('MaritalStatus') }} :</h6>
+            {{ item.employeeInformationMaster.maritalStatus }}
+          </div>
+          <div class="col-6 mb-3">
+            <h6>{{ l('NoOfDependents') }} :</h6>
+            {{ item.employeeInformationMaster.noOfDependents }}
+          </div>
+          <div class="col-6 mb-3">
+            <h6>{{ l('ConfirmationDate') }} :</h6>
+            {{ item.employeeInformationMaster.confirmationDate | luxonFormat: 'yyyy-LL-dd HH:mm:ss' }}
+          </div>
+          <div class="col-6 mb-3">
+            <h6>{{ l('DOJ') }} :</h6>
+            {{ item.employeeInformationMaster.doj | luxonFormat: 'yyyy-LL-dd HH:mm:ss' }}
+          </div>
+          <div class="col-6 mb-3">
+            <h6>{{ l('IhExp') }} :</h6>
+            {{ item.employeeInformationMaster.ihExp }}
+          </div>
+          <div class="col-6 mb-3">
+            <h6>{{ l('TotalExp') }} :</h6>
+            {{ item.employeeInformationMaster.totalExp }}
+          </div>
+          <div class="col-6 mb-3">
+            <h6>{{ l('PfNo') }} :</h6>
+            {{ item.employeeInformationMaster.pfNo }}
+          </div>
+          <div class="col-6 mb-3">
+            <h6>{{ l('EsiNo') }} :</h6>
+            {{ item.employeeInformationMaster.esiNo }}
+          </div>
+          <div class="col-6 mb-3">
+            <h6>{{ l('AcNo') }} :</h6>
+            {{ item.employeeInformationMaster.acNo }}
+          </div>
+          <div class="col-6 mb-3">
+            <h6>{{ l('PpNo') }} :</h6>
+            {{ item.employeeInformationMaster.ppNo }}
+          </div>
+          <div class="col-6 mb-3">
+            <h6>{{ l('PAN') }} :</h6>
+            {{ item.employeeInformationMaster.pan }}
+          </div>
+          <div class="col-6 mb-3">
+            <h6>{{ l('BG') }} :</h6>
+            {{ item.employeeInformationMaster.bg }}
+          </div>
+          <div class="col-6 mb-3">
+            <h6>{{ l('CL') }} :</h6>
+            {{ item.employeeInformationMaster.cl }}
+          </div>
+          <div class="col-6 mb-3">
+            <h6>{{ l('EL') }} :</h6>
+            {{ item.employeeInformationMaster.el }}
+          </div>
+          <div class="col-6 mb-3">
+            <h6>{{ l('SL') }} :</h6>
+            {{ item.employeeInformationMaster.sl }}
+          </div>
+          <div class="col-6 mb-3">
+            <h6>{{ l('BasicSalary') }} :</h6>
+            {{ item.employeeInformationMaster.basicSalary }}
+          </div>
+          <div class="col-6 mb-3">
+            <h6>{{ l('DA') }} :</h6>
+            {{ item.employeeInformationMaster.da }}
+          </div>
+          <div class="col-6 mb-3">
+            <h6>{{ l('HRA') }} :</h6>
+            {{ item.employeeInformationMaster.hra }}
+          </div>
+          <div class="col-6 mb-3">
+            <h6>{{ l('Conveyance') }} :</h6>
+            {{ item.employeeInformationMaster.conveyance }}
+          </div>
+          <div class="col-6 mb-3">
+            <h6>{{ l('Incentive') }} :</h6>
+            {{ item.employeeInformationMaster.incentive }}
+          </div>
+          <div class="col-6 mb-3">
+            <h6>{{ l('MedicalAllowance') }} :</h6>
+            {{ item.employeeInformationMaster.medicalAllowance }}
+          </div>
+          <div class="col-6 mb-3">
+            <h6>{{ l('OtherAllowances') }} :</h6>
+            {{ item.employeeInformationMaster.otherAllowances }}
+          </div>
+          <div class="col-6 mb-3">
+            <h6>{{ l('TotalSalary') }} :</h6>
+            {{ item.employeeInformationMaster.totalSalary }}
+          </div>
+          <div class="col-6 mb-3">
+            <h6>{{ l('Photo') }} :</h6>
+            {{ item.employeeInformationMaster.photo }}
+          </div>
+          <div class="col-6 mb-3">
+            <h6>{{ l('UanNo') }} :</h6>
+            {{ item.employeeInformationMaster.uanNo }}
+          </div>
+          <div class="col-6 mb-3">
+            <h6>{{ l('IsActive') }} :</h6>
+            <div *ngIf="item.employeeInformationMaster.isActive" class="text-left">
+              <i class="fa fa-check-circle text-success" title="True"></i>
+            </div>
+            <div *ngIf="!item.employeeInformationMaster.isActive" class="text-left">
+              <i class="fa fa-times-circle" title="False"></i>
+            </div>
+          </div>
+          <div class="col-6 mb-3">
+            <h6>{{ l('EmployeementUnder') }} :</h6>
+            {{ item.employeeInformationMaster.employeementUnder }}
+          </div>
+          <div class="col-6 mb-3">
+            <h6>{{ l('Division') }} :</h6>
+            {{ item.employeeInformationMaster.division }}
+          </div>
+          <div class="col-6 mb-3">
+            <h6>{{ l('ContractorId') }} :</h6>
+            {{ item.employeeInformationMaster.contractorId }}
+          </div>
+          <div class="col-6 mb-3">
+            <h6>{{ l('MessBill') }} :</h6>
+            <div *ngIf="item.employeeInformationMaster.messBill" class="text-left">
+              <i class="fa fa-check-circle text-success" title="True"></i>
+            </div>
+            <div *ngIf="!item.employeeInformationMaster.messBill" class="text-left">
+              <i class="fa fa-times-circle" title="False"></i>
+            </div>
+          </div>
+          <div class="col-6 mb-3">
+            <h6>{{ l('Onroll') }} :</h6>
+            <div *ngIf="item.employeeInformationMaster.onroll" class="text-left">
+              <i class="fa fa-check-circle text-success" title="True"></i>
+            </div>
+            <div *ngIf="!item.employeeInformationMaster.onroll" class="text-left">
+              <i class="fa fa-times-circle" title="False"></i>
+            </div>
+          </div>
+          <div class="col-6 mb-3">
+            <h6>{{ l('NameInTelugu') }} :</h6>
+            {{ item.employeeInformationMaster.nameInTelugu }}
+          </div>
+          <div class="col-6 mb-3">
+            <h6>{{ l('RjDate') }} :</h6>
+            {{ item.employeeInformationMaster.rjDate | luxonFormat: 'yyyy-LL-dd HH:mm:ss' }}
+          </div>
+          <div class="col-6 mb-3">
+            <h6>{{ l('Document') }} :</h6>
+            {{ item.employeeInformationMaster.document }}
+          </div>
+          <div class="col-6 mb-3">
+            <h6>{{ l('Extension') }} :</h6>
+            {{ item.employeeInformationMaster.extension }}
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button [disabled]="saving" type="button" class="btn btn-primary blue" (click)="close()">
+          {{ l('Close') }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,4 +1,7 @@
-﻿using Abp.IdentityServer4vNext;
+﻿using mc.SubDepartments;
+using mc.Departments;
+using mc.EmployeeInformationMasters;
+using Abp.IdentityServer4vNext;
 using Abp.Zero.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using mc.Authorization.Delegation;
@@ -16,6 +19,12 @@ namespace mc.EntityFrameworkCore
 {
     public class mcDbContext : AbpZeroDbContext<Tenant, Role, User, mcDbContext>, IAbpPersistedGrantDbContext
     {
+        public virtual DbSet<SubDepartment> SubDepartments { get; set; }
+
+        public virtual DbSet<Department> Departments { get; set; }
+
+        public virtual DbSet<EmployeeInformationMaster> EmployeeInformationMasters { get; set; }
+
         /* Define an IDbSet for each entity of the application */
 
         public virtual DbSet<BinaryObject> BinaryObjects { get; set; }
@@ -46,10 +55,22 @@ namespace mc.EntityFrameworkCore
         {
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity<SubDepartment>(s =>
+                       {
+                           s.HasIndex(e => new { e.TenantId });
+                       });
+            modelBuilder.Entity<Department>(d =>
+                       {
+                           d.HasIndex(e => new { e.TenantId });
+                       });
+            modelBuilder.Entity<EmployeeInformationMaster>(x =>
+                       {
+                           x.HasIndex(e => new { e.TenantId });
+                       });
             modelBuilder.Entity<BinaryObject>(b =>
-            {
-                b.HasIndex(e => new { e.TenantId });
-            });
+                       {
+                           b.HasIndex(e => new { e.TenantId });
+                       });
 
             modelBuilder.Entity<ChatMessage>(b =>
             {

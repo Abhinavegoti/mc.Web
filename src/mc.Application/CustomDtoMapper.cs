@@ -1,3 +1,9 @@
+﻿using mc.SubDepartments.Dtos;
+using mc.SubDepartments;
+using mc.Departments.Dtos;
+using mc.Departments;
+using mc.EmployeeInformationMasters.Dtos;
+using mc.EmployeeInformationMasters;
 using Abp.Application.Editions;
 using Abp.Application.Features;
 using Abp.Auditing;
@@ -47,6 +53,12 @@ namespace mc
     {
         public static void CreateMappings(IMapperConfigurationExpression configuration)
         {
+            configuration.CreateMap<CreateOrEditSubDepartmentDto, SubDepartment>().ReverseMap();
+            configuration.CreateMap<SubDepartmentDto, SubDepartment>().ReverseMap();
+            configuration.CreateMap<CreateOrEditDepartmentDto, Department>().ReverseMap();
+            configuration.CreateMap<DepartmentDto, Department>().ReverseMap();
+            configuration.CreateMap<CreateOrEditEmployeeInformationMasterDto, EmployeeInformationMaster>().ReverseMap();
+            configuration.CreateMap<EmployeeInformationMasterDto, EmployeeInformationMaster>().ReverseMap();
             //Inputs
             configuration.CreateMap<CheckboxInputType, FeatureInputTypeDto>();
             configuration.CreateMap<SingleLineStringInputType, FeatureInputTypeDto>();
@@ -75,8 +87,6 @@ namespace mc
             configuration.CreateMap<Role, RoleListDto>();
             configuration.CreateMap<UserRole, UserListRoleDto>();
 
-            
-
             //Edition
             configuration.CreateMap<EditionEditDto, SubscribableEdition>().ReverseMap();
             configuration.CreateMap<EditionCreateDto, SubscribableEdition>();
@@ -89,7 +99,6 @@ namespace mc
             configuration.CreateMap<Edition, EditionEditDto>();
             configuration.CreateMap<Edition, SubscribableEdition>();
             configuration.CreateMap<Edition, EditionSelectDto>();
-
 
             //Payment
             configuration.CreateMap<SubscriptionPaymentDto, SubscriptionPayment>().ReverseMap();
@@ -158,7 +167,7 @@ namespace mc
             configuration.CreateMap<DynamicEntityPropertyDto, DynamicEntityProperty>();
 
             configuration.CreateMap<DynamicEntityPropertyValue, DynamicEntityPropertyValueDto>().ReverseMap();
-            
+
             //User Delegations
             configuration.CreateMap<CreateUserDelegationDto, UserDelegation>();
 

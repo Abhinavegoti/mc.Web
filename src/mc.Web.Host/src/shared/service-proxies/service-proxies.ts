@@ -2550,6 +2550,361 @@ export class DemoUiComponentsServiceProxy {
 }
 
 @Injectable()
+export class DepartmentsServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    /**
+     * @param filter (optional) 
+     * @param nameFilter (optional) 
+     * @param sorting (optional) 
+     * @param skipCount (optional) 
+     * @param maxResultCount (optional) 
+     * @return Success
+     */
+    getAll(filter: string | null | undefined, nameFilter: string | null | undefined, sorting: string | null | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfGetDepartmentForViewDto> {
+        let url_ = this.baseUrl + "/api/services/app/Departments/GetAll?";
+        if (filter !== undefined && filter !== null)
+            url_ += "Filter=" + encodeURIComponent("" + filter) + "&";
+        if (nameFilter !== undefined && nameFilter !== null)
+            url_ += "NameFilter=" + encodeURIComponent("" + nameFilter) + "&";
+        if (sorting !== undefined && sorting !== null)
+            url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&";
+        if (skipCount === null)
+            throw new Error("The parameter 'skipCount' cannot be null.");
+        else if (skipCount !== undefined)
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&";
+        if (maxResultCount === null)
+            throw new Error("The parameter 'maxResultCount' cannot be null.");
+        else if (maxResultCount !== undefined)
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAll(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAll(<any>response_);
+                } catch (e) {
+                    return <Observable<PagedResultDtoOfGetDepartmentForViewDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<PagedResultDtoOfGetDepartmentForViewDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAll(response: HttpResponseBase): Observable<PagedResultDtoOfGetDepartmentForViewDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfGetDepartmentForViewDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PagedResultDtoOfGetDepartmentForViewDto>(<any>null);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    getDepartmentForView(id: number | undefined): Observable<GetDepartmentForViewDto> {
+        let url_ = this.baseUrl + "/api/services/app/Departments/GetDepartmentForView?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetDepartmentForView(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetDepartmentForView(<any>response_);
+                } catch (e) {
+                    return <Observable<GetDepartmentForViewDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<GetDepartmentForViewDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetDepartmentForView(response: HttpResponseBase): Observable<GetDepartmentForViewDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GetDepartmentForViewDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<GetDepartmentForViewDto>(<any>null);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    getDepartmentForEdit(id: number | undefined): Observable<GetDepartmentForEditOutput> {
+        let url_ = this.baseUrl + "/api/services/app/Departments/GetDepartmentForEdit?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetDepartmentForEdit(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetDepartmentForEdit(<any>response_);
+                } catch (e) {
+                    return <Observable<GetDepartmentForEditOutput>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<GetDepartmentForEditOutput>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetDepartmentForEdit(response: HttpResponseBase): Observable<GetDepartmentForEditOutput> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GetDepartmentForEditOutput.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<GetDepartmentForEditOutput>(<any>null);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    createOrEdit(body: CreateOrEditDepartmentDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/Departments/CreateOrEdit";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreateOrEdit(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreateOrEdit(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processCreateOrEdit(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    delete(id: number | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/Departments/Delete?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDelete(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDelete(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processDelete(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @param filter (optional) 
+     * @param nameFilter (optional) 
+     * @return Success
+     */
+    getDepartmentsToExcel(filter: string | null | undefined, nameFilter: string | null | undefined): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/Departments/GetDepartmentsToExcel?";
+        if (filter !== undefined && filter !== null)
+            url_ += "Filter=" + encodeURIComponent("" + filter) + "&";
+        if (nameFilter !== undefined && nameFilter !== null)
+            url_ += "NameFilter=" + encodeURIComponent("" + nameFilter) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetDepartmentsToExcel(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetDepartmentsToExcel(<any>response_);
+                } catch (e) {
+                    return <Observable<FileDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<FileDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetDepartmentsToExcel(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<FileDto>(<any>null);
+    }
+}
+
+@Injectable()
 export class DynamicEntityPropertyServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -4552,6 +4907,763 @@ export class EditionServiceProxy {
             }));
         }
         return _observableOf<number>(<any>null);
+    }
+}
+
+@Injectable()
+export class EmployeeInformationMastersServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    /**
+     * @param filter (optional) 
+     * @param empIdFilter (optional) 
+     * @param maxBioIdFilter (optional) 
+     * @param minBioIdFilter (optional) 
+     * @param internalIdFilter (optional) 
+     * @param maxDocFilter (optional) 
+     * @param minDocFilter (optional) 
+     * @param nameFilter (optional) 
+     * @param forHFilter (optional) 
+     * @param maxDobFilter (optional) 
+     * @param minDobFilter (optional) 
+     * @param presentAddressFilter (optional) 
+     * @param permanentAddressFilter (optional) 
+     * @param genderFilter (optional) 
+     * @param contactNoFilter (optional) 
+     * @param altContactNoFilter (optional) 
+     * @param maritalStatusFilter (optional) 
+     * @param maxNoOfDependentsFilter (optional) 
+     * @param minNoOfDependentsFilter (optional) 
+     * @param maxConfirmationDateFilter (optional) 
+     * @param minConfirmationDateFilter (optional) 
+     * @param maxDOJFilter (optional) 
+     * @param minDOJFilter (optional) 
+     * @param ihExpFilter (optional) 
+     * @param maxTotalExpFilter (optional) 
+     * @param minTotalExpFilter (optional) 
+     * @param pfNoFilter (optional) 
+     * @param esiNoFilter (optional) 
+     * @param acNoFilter (optional) 
+     * @param ppNoFilter (optional) 
+     * @param pANFilter (optional) 
+     * @param bGFilter (optional) 
+     * @param maxCLFilter (optional) 
+     * @param minCLFilter (optional) 
+     * @param maxELFilter (optional) 
+     * @param minELFilter (optional) 
+     * @param maxSLFilter (optional) 
+     * @param minSLFilter (optional) 
+     * @param maxBasicSalaryFilter (optional) 
+     * @param minBasicSalaryFilter (optional) 
+     * @param maxDAFilter (optional) 
+     * @param minDAFilter (optional) 
+     * @param maxHRAFilter (optional) 
+     * @param minHRAFilter (optional) 
+     * @param maxConveyanceFilter (optional) 
+     * @param minConveyanceFilter (optional) 
+     * @param maxIncentiveFilter (optional) 
+     * @param minIncentiveFilter (optional) 
+     * @param maxMedicalAllowanceFilter (optional) 
+     * @param minMedicalAllowanceFilter (optional) 
+     * @param maxOtherAllowancesFilter (optional) 
+     * @param minOtherAllowancesFilter (optional) 
+     * @param maxTotalSalaryFilter (optional) 
+     * @param minTotalSalaryFilter (optional) 
+     * @param photoFilter (optional) 
+     * @param maxUanNoFilter (optional) 
+     * @param minUanNoFilter (optional) 
+     * @param isActiveFilter (optional) 
+     * @param employeementUnderFilter (optional) 
+     * @param divisionFilter (optional) 
+     * @param maxContractorIdFilter (optional) 
+     * @param minContractorIdFilter (optional) 
+     * @param messBillFilter (optional) 
+     * @param onrollFilter (optional) 
+     * @param nameInTeluguFilter (optional) 
+     * @param maxRjDateFilter (optional) 
+     * @param minRjDateFilter (optional) 
+     * @param documentFilter (optional) 
+     * @param extensionFilter (optional) 
+     * @param sorting (optional) 
+     * @param skipCount (optional) 
+     * @param maxResultCount (optional) 
+     * @return Success
+     */
+    getAll(filter: string | null | undefined, empIdFilter: string | null | undefined, maxBioIdFilter: number | null | undefined, minBioIdFilter: number | null | undefined, internalIdFilter: string | null | undefined, maxDocFilter: DateTime | null | undefined, minDocFilter: DateTime | null | undefined, nameFilter: string | null | undefined, forHFilter: string | null | undefined, maxDobFilter: DateTime | null | undefined, minDobFilter: DateTime | null | undefined, presentAddressFilter: string | null | undefined, permanentAddressFilter: string | null | undefined, genderFilter: string | null | undefined, contactNoFilter: string | null | undefined, altContactNoFilter: string | null | undefined, maritalStatusFilter: string | null | undefined, maxNoOfDependentsFilter: number | null | undefined, minNoOfDependentsFilter: number | null | undefined, maxConfirmationDateFilter: DateTime | null | undefined, minConfirmationDateFilter: DateTime | null | undefined, maxDOJFilter: DateTime | null | undefined, minDOJFilter: DateTime | null | undefined, ihExpFilter: string | null | undefined, maxTotalExpFilter: number | null | undefined, minTotalExpFilter: number | null | undefined, pfNoFilter: string | null | undefined, esiNoFilter: string | null | undefined, acNoFilter: string | null | undefined, ppNoFilter: string | null | undefined, pANFilter: string | null | undefined, bGFilter: string | null | undefined, maxCLFilter: number | null | undefined, minCLFilter: number | null | undefined, maxELFilter: number | null | undefined, minELFilter: number | null | undefined, maxSLFilter: number | null | undefined, minSLFilter: number | null | undefined, maxBasicSalaryFilter: number | null | undefined, minBasicSalaryFilter: number | null | undefined, maxDAFilter: number | null | undefined, minDAFilter: number | null | undefined, maxHRAFilter: number | null | undefined, minHRAFilter: number | null | undefined, maxConveyanceFilter: number | null | undefined, minConveyanceFilter: number | null | undefined, maxIncentiveFilter: number | null | undefined, minIncentiveFilter: number | null | undefined, maxMedicalAllowanceFilter: number | null | undefined, minMedicalAllowanceFilter: number | null | undefined, maxOtherAllowancesFilter: number | null | undefined, minOtherAllowancesFilter: number | null | undefined, maxTotalSalaryFilter: number | null | undefined, minTotalSalaryFilter: number | null | undefined, photoFilter: string | null | undefined, maxUanNoFilter: number | null | undefined, minUanNoFilter: number | null | undefined, isActiveFilter: number | null | undefined, employeementUnderFilter: string | null | undefined, divisionFilter: string | null | undefined, maxContractorIdFilter: number | null | undefined, minContractorIdFilter: number | null | undefined, messBillFilter: number | null | undefined, onrollFilter: number | null | undefined, nameInTeluguFilter: string | null | undefined, maxRjDateFilter: DateTime | null | undefined, minRjDateFilter: DateTime | null | undefined, documentFilter: string | null | undefined, extensionFilter: string | null | undefined, sorting: string | null | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfGetEmployeeInformationMasterForViewDto> {
+        let url_ = this.baseUrl + "/api/services/app/EmployeeInformationMasters/GetAll?";
+        if (filter !== undefined && filter !== null)
+            url_ += "Filter=" + encodeURIComponent("" + filter) + "&";
+        if (empIdFilter !== undefined && empIdFilter !== null)
+            url_ += "EmpIdFilter=" + encodeURIComponent("" + empIdFilter) + "&";
+        if (maxBioIdFilter !== undefined && maxBioIdFilter !== null)
+            url_ += "MaxBioIdFilter=" + encodeURIComponent("" + maxBioIdFilter) + "&";
+        if (minBioIdFilter !== undefined && minBioIdFilter !== null)
+            url_ += "MinBioIdFilter=" + encodeURIComponent("" + minBioIdFilter) + "&";
+        if (internalIdFilter !== undefined && internalIdFilter !== null)
+            url_ += "InternalIdFilter=" + encodeURIComponent("" + internalIdFilter) + "&";
+        if (maxDocFilter !== undefined && maxDocFilter !== null)
+            url_ += "MaxDocFilter=" + encodeURIComponent(maxDocFilter ? "" + maxDocFilter.toJSON() : "") + "&";
+        if (minDocFilter !== undefined && minDocFilter !== null)
+            url_ += "MinDocFilter=" + encodeURIComponent(minDocFilter ? "" + minDocFilter.toJSON() : "") + "&";
+        if (nameFilter !== undefined && nameFilter !== null)
+            url_ += "NameFilter=" + encodeURIComponent("" + nameFilter) + "&";
+        if (forHFilter !== undefined && forHFilter !== null)
+            url_ += "ForHFilter=" + encodeURIComponent("" + forHFilter) + "&";
+        if (maxDobFilter !== undefined && maxDobFilter !== null)
+            url_ += "MaxDobFilter=" + encodeURIComponent(maxDobFilter ? "" + maxDobFilter.toJSON() : "") + "&";
+        if (minDobFilter !== undefined && minDobFilter !== null)
+            url_ += "MinDobFilter=" + encodeURIComponent(minDobFilter ? "" + minDobFilter.toJSON() : "") + "&";
+        if (presentAddressFilter !== undefined && presentAddressFilter !== null)
+            url_ += "PresentAddressFilter=" + encodeURIComponent("" + presentAddressFilter) + "&";
+        if (permanentAddressFilter !== undefined && permanentAddressFilter !== null)
+            url_ += "PermanentAddressFilter=" + encodeURIComponent("" + permanentAddressFilter) + "&";
+        if (genderFilter !== undefined && genderFilter !== null)
+            url_ += "GenderFilter=" + encodeURIComponent("" + genderFilter) + "&";
+        if (contactNoFilter !== undefined && contactNoFilter !== null)
+            url_ += "ContactNoFilter=" + encodeURIComponent("" + contactNoFilter) + "&";
+        if (altContactNoFilter !== undefined && altContactNoFilter !== null)
+            url_ += "AltContactNoFilter=" + encodeURIComponent("" + altContactNoFilter) + "&";
+        if (maritalStatusFilter !== undefined && maritalStatusFilter !== null)
+            url_ += "MaritalStatusFilter=" + encodeURIComponent("" + maritalStatusFilter) + "&";
+        if (maxNoOfDependentsFilter !== undefined && maxNoOfDependentsFilter !== null)
+            url_ += "MaxNoOfDependentsFilter=" + encodeURIComponent("" + maxNoOfDependentsFilter) + "&";
+        if (minNoOfDependentsFilter !== undefined && minNoOfDependentsFilter !== null)
+            url_ += "MinNoOfDependentsFilter=" + encodeURIComponent("" + minNoOfDependentsFilter) + "&";
+        if (maxConfirmationDateFilter !== undefined && maxConfirmationDateFilter !== null)
+            url_ += "MaxConfirmationDateFilter=" + encodeURIComponent(maxConfirmationDateFilter ? "" + maxConfirmationDateFilter.toJSON() : "") + "&";
+        if (minConfirmationDateFilter !== undefined && minConfirmationDateFilter !== null)
+            url_ += "MinConfirmationDateFilter=" + encodeURIComponent(minConfirmationDateFilter ? "" + minConfirmationDateFilter.toJSON() : "") + "&";
+        if (maxDOJFilter !== undefined && maxDOJFilter !== null)
+            url_ += "MaxDOJFilter=" + encodeURIComponent(maxDOJFilter ? "" + maxDOJFilter.toJSON() : "") + "&";
+        if (minDOJFilter !== undefined && minDOJFilter !== null)
+            url_ += "MinDOJFilter=" + encodeURIComponent(minDOJFilter ? "" + minDOJFilter.toJSON() : "") + "&";
+        if (ihExpFilter !== undefined && ihExpFilter !== null)
+            url_ += "IhExpFilter=" + encodeURIComponent("" + ihExpFilter) + "&";
+        if (maxTotalExpFilter !== undefined && maxTotalExpFilter !== null)
+            url_ += "MaxTotalExpFilter=" + encodeURIComponent("" + maxTotalExpFilter) + "&";
+        if (minTotalExpFilter !== undefined && minTotalExpFilter !== null)
+            url_ += "MinTotalExpFilter=" + encodeURIComponent("" + minTotalExpFilter) + "&";
+        if (pfNoFilter !== undefined && pfNoFilter !== null)
+            url_ += "PfNoFilter=" + encodeURIComponent("" + pfNoFilter) + "&";
+        if (esiNoFilter !== undefined && esiNoFilter !== null)
+            url_ += "EsiNoFilter=" + encodeURIComponent("" + esiNoFilter) + "&";
+        if (acNoFilter !== undefined && acNoFilter !== null)
+            url_ += "AcNoFilter=" + encodeURIComponent("" + acNoFilter) + "&";
+        if (ppNoFilter !== undefined && ppNoFilter !== null)
+            url_ += "PpNoFilter=" + encodeURIComponent("" + ppNoFilter) + "&";
+        if (pANFilter !== undefined && pANFilter !== null)
+            url_ += "PANFilter=" + encodeURIComponent("" + pANFilter) + "&";
+        if (bGFilter !== undefined && bGFilter !== null)
+            url_ += "BGFilter=" + encodeURIComponent("" + bGFilter) + "&";
+        if (maxCLFilter !== undefined && maxCLFilter !== null)
+            url_ += "MaxCLFilter=" + encodeURIComponent("" + maxCLFilter) + "&";
+        if (minCLFilter !== undefined && minCLFilter !== null)
+            url_ += "MinCLFilter=" + encodeURIComponent("" + minCLFilter) + "&";
+        if (maxELFilter !== undefined && maxELFilter !== null)
+            url_ += "MaxELFilter=" + encodeURIComponent("" + maxELFilter) + "&";
+        if (minELFilter !== undefined && minELFilter !== null)
+            url_ += "MinELFilter=" + encodeURIComponent("" + minELFilter) + "&";
+        if (maxSLFilter !== undefined && maxSLFilter !== null)
+            url_ += "MaxSLFilter=" + encodeURIComponent("" + maxSLFilter) + "&";
+        if (minSLFilter !== undefined && minSLFilter !== null)
+            url_ += "MinSLFilter=" + encodeURIComponent("" + minSLFilter) + "&";
+        if (maxBasicSalaryFilter !== undefined && maxBasicSalaryFilter !== null)
+            url_ += "MaxBasicSalaryFilter=" + encodeURIComponent("" + maxBasicSalaryFilter) + "&";
+        if (minBasicSalaryFilter !== undefined && minBasicSalaryFilter !== null)
+            url_ += "MinBasicSalaryFilter=" + encodeURIComponent("" + minBasicSalaryFilter) + "&";
+        if (maxDAFilter !== undefined && maxDAFilter !== null)
+            url_ += "MaxDAFilter=" + encodeURIComponent("" + maxDAFilter) + "&";
+        if (minDAFilter !== undefined && minDAFilter !== null)
+            url_ += "MinDAFilter=" + encodeURIComponent("" + minDAFilter) + "&";
+        if (maxHRAFilter !== undefined && maxHRAFilter !== null)
+            url_ += "MaxHRAFilter=" + encodeURIComponent("" + maxHRAFilter) + "&";
+        if (minHRAFilter !== undefined && minHRAFilter !== null)
+            url_ += "MinHRAFilter=" + encodeURIComponent("" + minHRAFilter) + "&";
+        if (maxConveyanceFilter !== undefined && maxConveyanceFilter !== null)
+            url_ += "MaxConveyanceFilter=" + encodeURIComponent("" + maxConveyanceFilter) + "&";
+        if (minConveyanceFilter !== undefined && minConveyanceFilter !== null)
+            url_ += "MinConveyanceFilter=" + encodeURIComponent("" + minConveyanceFilter) + "&";
+        if (maxIncentiveFilter !== undefined && maxIncentiveFilter !== null)
+            url_ += "MaxIncentiveFilter=" + encodeURIComponent("" + maxIncentiveFilter) + "&";
+        if (minIncentiveFilter !== undefined && minIncentiveFilter !== null)
+            url_ += "MinIncentiveFilter=" + encodeURIComponent("" + minIncentiveFilter) + "&";
+        if (maxMedicalAllowanceFilter !== undefined && maxMedicalAllowanceFilter !== null)
+            url_ += "MaxMedicalAllowanceFilter=" + encodeURIComponent("" + maxMedicalAllowanceFilter) + "&";
+        if (minMedicalAllowanceFilter !== undefined && minMedicalAllowanceFilter !== null)
+            url_ += "MinMedicalAllowanceFilter=" + encodeURIComponent("" + minMedicalAllowanceFilter) + "&";
+        if (maxOtherAllowancesFilter !== undefined && maxOtherAllowancesFilter !== null)
+            url_ += "MaxOtherAllowancesFilter=" + encodeURIComponent("" + maxOtherAllowancesFilter) + "&";
+        if (minOtherAllowancesFilter !== undefined && minOtherAllowancesFilter !== null)
+            url_ += "MinOtherAllowancesFilter=" + encodeURIComponent("" + minOtherAllowancesFilter) + "&";
+        if (maxTotalSalaryFilter !== undefined && maxTotalSalaryFilter !== null)
+            url_ += "MaxTotalSalaryFilter=" + encodeURIComponent("" + maxTotalSalaryFilter) + "&";
+        if (minTotalSalaryFilter !== undefined && minTotalSalaryFilter !== null)
+            url_ += "MinTotalSalaryFilter=" + encodeURIComponent("" + minTotalSalaryFilter) + "&";
+        if (photoFilter !== undefined && photoFilter !== null)
+            url_ += "PhotoFilter=" + encodeURIComponent("" + photoFilter) + "&";
+        if (maxUanNoFilter !== undefined && maxUanNoFilter !== null)
+            url_ += "MaxUanNoFilter=" + encodeURIComponent("" + maxUanNoFilter) + "&";
+        if (minUanNoFilter !== undefined && minUanNoFilter !== null)
+            url_ += "MinUanNoFilter=" + encodeURIComponent("" + minUanNoFilter) + "&";
+        if (isActiveFilter !== undefined && isActiveFilter !== null)
+            url_ += "IsActiveFilter=" + encodeURIComponent("" + isActiveFilter) + "&";
+        if (employeementUnderFilter !== undefined && employeementUnderFilter !== null)
+            url_ += "EmployeementUnderFilter=" + encodeURIComponent("" + employeementUnderFilter) + "&";
+        if (divisionFilter !== undefined && divisionFilter !== null)
+            url_ += "DivisionFilter=" + encodeURIComponent("" + divisionFilter) + "&";
+        if (maxContractorIdFilter !== undefined && maxContractorIdFilter !== null)
+            url_ += "MaxContractorIdFilter=" + encodeURIComponent("" + maxContractorIdFilter) + "&";
+        if (minContractorIdFilter !== undefined && minContractorIdFilter !== null)
+            url_ += "MinContractorIdFilter=" + encodeURIComponent("" + minContractorIdFilter) + "&";
+        if (messBillFilter !== undefined && messBillFilter !== null)
+            url_ += "MessBillFilter=" + encodeURIComponent("" + messBillFilter) + "&";
+        if (onrollFilter !== undefined && onrollFilter !== null)
+            url_ += "OnrollFilter=" + encodeURIComponent("" + onrollFilter) + "&";
+        if (nameInTeluguFilter !== undefined && nameInTeluguFilter !== null)
+            url_ += "NameInTeluguFilter=" + encodeURIComponent("" + nameInTeluguFilter) + "&";
+        if (maxRjDateFilter !== undefined && maxRjDateFilter !== null)
+            url_ += "MaxRjDateFilter=" + encodeURIComponent(maxRjDateFilter ? "" + maxRjDateFilter.toJSON() : "") + "&";
+        if (minRjDateFilter !== undefined && minRjDateFilter !== null)
+            url_ += "MinRjDateFilter=" + encodeURIComponent(minRjDateFilter ? "" + minRjDateFilter.toJSON() : "") + "&";
+        if (documentFilter !== undefined && documentFilter !== null)
+            url_ += "DocumentFilter=" + encodeURIComponent("" + documentFilter) + "&";
+        if (extensionFilter !== undefined && extensionFilter !== null)
+            url_ += "ExtensionFilter=" + encodeURIComponent("" + extensionFilter) + "&";
+        if (sorting !== undefined && sorting !== null)
+            url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&";
+        if (skipCount === null)
+            throw new Error("The parameter 'skipCount' cannot be null.");
+        else if (skipCount !== undefined)
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&";
+        if (maxResultCount === null)
+            throw new Error("The parameter 'maxResultCount' cannot be null.");
+        else if (maxResultCount !== undefined)
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAll(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAll(<any>response_);
+                } catch (e) {
+                    return <Observable<PagedResultDtoOfGetEmployeeInformationMasterForViewDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<PagedResultDtoOfGetEmployeeInformationMasterForViewDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAll(response: HttpResponseBase): Observable<PagedResultDtoOfGetEmployeeInformationMasterForViewDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfGetEmployeeInformationMasterForViewDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PagedResultDtoOfGetEmployeeInformationMasterForViewDto>(<any>null);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    getEmployeeInformationMasterForView(id: number | undefined): Observable<GetEmployeeInformationMasterForViewDto> {
+        let url_ = this.baseUrl + "/api/services/app/EmployeeInformationMasters/GetEmployeeInformationMasterForView?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetEmployeeInformationMasterForView(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetEmployeeInformationMasterForView(<any>response_);
+                } catch (e) {
+                    return <Observable<GetEmployeeInformationMasterForViewDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<GetEmployeeInformationMasterForViewDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetEmployeeInformationMasterForView(response: HttpResponseBase): Observable<GetEmployeeInformationMasterForViewDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GetEmployeeInformationMasterForViewDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<GetEmployeeInformationMasterForViewDto>(<any>null);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    getEmployeeInformationMasterForEdit(id: number | undefined): Observable<GetEmployeeInformationMasterForEditOutput> {
+        let url_ = this.baseUrl + "/api/services/app/EmployeeInformationMasters/GetEmployeeInformationMasterForEdit?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetEmployeeInformationMasterForEdit(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetEmployeeInformationMasterForEdit(<any>response_);
+                } catch (e) {
+                    return <Observable<GetEmployeeInformationMasterForEditOutput>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<GetEmployeeInformationMasterForEditOutput>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetEmployeeInformationMasterForEdit(response: HttpResponseBase): Observable<GetEmployeeInformationMasterForEditOutput> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GetEmployeeInformationMasterForEditOutput.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<GetEmployeeInformationMasterForEditOutput>(<any>null);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    createOrEdit(body: CreateOrEditEmployeeInformationMasterDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/EmployeeInformationMasters/CreateOrEdit";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreateOrEdit(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreateOrEdit(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processCreateOrEdit(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    delete(id: number | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/EmployeeInformationMasters/Delete?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDelete(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDelete(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processDelete(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @param filter (optional) 
+     * @param empIdFilter (optional) 
+     * @param maxBioIdFilter (optional) 
+     * @param minBioIdFilter (optional) 
+     * @param internalIdFilter (optional) 
+     * @param maxDocFilter (optional) 
+     * @param minDocFilter (optional) 
+     * @param nameFilter (optional) 
+     * @param forHFilter (optional) 
+     * @param maxDobFilter (optional) 
+     * @param minDobFilter (optional) 
+     * @param presentAddressFilter (optional) 
+     * @param permanentAddressFilter (optional) 
+     * @param genderFilter (optional) 
+     * @param contactNoFilter (optional) 
+     * @param altContactNoFilter (optional) 
+     * @param maritalStatusFilter (optional) 
+     * @param maxNoOfDependentsFilter (optional) 
+     * @param minNoOfDependentsFilter (optional) 
+     * @param maxConfirmationDateFilter (optional) 
+     * @param minConfirmationDateFilter (optional) 
+     * @param maxDOJFilter (optional) 
+     * @param minDOJFilter (optional) 
+     * @param ihExpFilter (optional) 
+     * @param maxTotalExpFilter (optional) 
+     * @param minTotalExpFilter (optional) 
+     * @param pfNoFilter (optional) 
+     * @param esiNoFilter (optional) 
+     * @param acNoFilter (optional) 
+     * @param ppNoFilter (optional) 
+     * @param pANFilter (optional) 
+     * @param bGFilter (optional) 
+     * @param maxCLFilter (optional) 
+     * @param minCLFilter (optional) 
+     * @param maxELFilter (optional) 
+     * @param minELFilter (optional) 
+     * @param maxSLFilter (optional) 
+     * @param minSLFilter (optional) 
+     * @param maxBasicSalaryFilter (optional) 
+     * @param minBasicSalaryFilter (optional) 
+     * @param maxDAFilter (optional) 
+     * @param minDAFilter (optional) 
+     * @param maxHRAFilter (optional) 
+     * @param minHRAFilter (optional) 
+     * @param maxConveyanceFilter (optional) 
+     * @param minConveyanceFilter (optional) 
+     * @param maxIncentiveFilter (optional) 
+     * @param minIncentiveFilter (optional) 
+     * @param maxMedicalAllowanceFilter (optional) 
+     * @param minMedicalAllowanceFilter (optional) 
+     * @param maxOtherAllowancesFilter (optional) 
+     * @param minOtherAllowancesFilter (optional) 
+     * @param maxTotalSalaryFilter (optional) 
+     * @param minTotalSalaryFilter (optional) 
+     * @param photoFilter (optional) 
+     * @param maxUanNoFilter (optional) 
+     * @param minUanNoFilter (optional) 
+     * @param isActiveFilter (optional) 
+     * @param employeementUnderFilter (optional) 
+     * @param divisionFilter (optional) 
+     * @param maxContractorIdFilter (optional) 
+     * @param minContractorIdFilter (optional) 
+     * @param messBillFilter (optional) 
+     * @param onrollFilter (optional) 
+     * @param nameInTeluguFilter (optional) 
+     * @param maxRjDateFilter (optional) 
+     * @param minRjDateFilter (optional) 
+     * @param documentFilter (optional) 
+     * @param extensionFilter (optional) 
+     * @return Success
+     */
+    getEmployeeInformationMastersToExcel(filter: string | null | undefined, empIdFilter: string | null | undefined, maxBioIdFilter: number | null | undefined, minBioIdFilter: number | null | undefined, internalIdFilter: string | null | undefined, maxDocFilter: DateTime | null | undefined, minDocFilter: DateTime | null | undefined, nameFilter: string | null | undefined, forHFilter: string | null | undefined, maxDobFilter: DateTime | null | undefined, minDobFilter: DateTime | null | undefined, presentAddressFilter: string | null | undefined, permanentAddressFilter: string | null | undefined, genderFilter: string | null | undefined, contactNoFilter: string | null | undefined, altContactNoFilter: string | null | undefined, maritalStatusFilter: string | null | undefined, maxNoOfDependentsFilter: number | null | undefined, minNoOfDependentsFilter: number | null | undefined, maxConfirmationDateFilter: DateTime | null | undefined, minConfirmationDateFilter: DateTime | null | undefined, maxDOJFilter: DateTime | null | undefined, minDOJFilter: DateTime | null | undefined, ihExpFilter: string | null | undefined, maxTotalExpFilter: number | null | undefined, minTotalExpFilter: number | null | undefined, pfNoFilter: string | null | undefined, esiNoFilter: string | null | undefined, acNoFilter: string | null | undefined, ppNoFilter: string | null | undefined, pANFilter: string | null | undefined, bGFilter: string | null | undefined, maxCLFilter: number | null | undefined, minCLFilter: number | null | undefined, maxELFilter: number | null | undefined, minELFilter: number | null | undefined, maxSLFilter: number | null | undefined, minSLFilter: number | null | undefined, maxBasicSalaryFilter: number | null | undefined, minBasicSalaryFilter: number | null | undefined, maxDAFilter: number | null | undefined, minDAFilter: number | null | undefined, maxHRAFilter: number | null | undefined, minHRAFilter: number | null | undefined, maxConveyanceFilter: number | null | undefined, minConveyanceFilter: number | null | undefined, maxIncentiveFilter: number | null | undefined, minIncentiveFilter: number | null | undefined, maxMedicalAllowanceFilter: number | null | undefined, minMedicalAllowanceFilter: number | null | undefined, maxOtherAllowancesFilter: number | null | undefined, minOtherAllowancesFilter: number | null | undefined, maxTotalSalaryFilter: number | null | undefined, minTotalSalaryFilter: number | null | undefined, photoFilter: string | null | undefined, maxUanNoFilter: number | null | undefined, minUanNoFilter: number | null | undefined, isActiveFilter: number | null | undefined, employeementUnderFilter: string | null | undefined, divisionFilter: string | null | undefined, maxContractorIdFilter: number | null | undefined, minContractorIdFilter: number | null | undefined, messBillFilter: number | null | undefined, onrollFilter: number | null | undefined, nameInTeluguFilter: string | null | undefined, maxRjDateFilter: DateTime | null | undefined, minRjDateFilter: DateTime | null | undefined, documentFilter: string | null | undefined, extensionFilter: string | null | undefined): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/EmployeeInformationMasters/GetEmployeeInformationMastersToExcel?";
+        if (filter !== undefined && filter !== null)
+            url_ += "Filter=" + encodeURIComponent("" + filter) + "&";
+        if (empIdFilter !== undefined && empIdFilter !== null)
+            url_ += "EmpIdFilter=" + encodeURIComponent("" + empIdFilter) + "&";
+        if (maxBioIdFilter !== undefined && maxBioIdFilter !== null)
+            url_ += "MaxBioIdFilter=" + encodeURIComponent("" + maxBioIdFilter) + "&";
+        if (minBioIdFilter !== undefined && minBioIdFilter !== null)
+            url_ += "MinBioIdFilter=" + encodeURIComponent("" + minBioIdFilter) + "&";
+        if (internalIdFilter !== undefined && internalIdFilter !== null)
+            url_ += "InternalIdFilter=" + encodeURIComponent("" + internalIdFilter) + "&";
+        if (maxDocFilter !== undefined && maxDocFilter !== null)
+            url_ += "MaxDocFilter=" + encodeURIComponent(maxDocFilter ? "" + maxDocFilter.toJSON() : "") + "&";
+        if (minDocFilter !== undefined && minDocFilter !== null)
+            url_ += "MinDocFilter=" + encodeURIComponent(minDocFilter ? "" + minDocFilter.toJSON() : "") + "&";
+        if (nameFilter !== undefined && nameFilter !== null)
+            url_ += "NameFilter=" + encodeURIComponent("" + nameFilter) + "&";
+        if (forHFilter !== undefined && forHFilter !== null)
+            url_ += "ForHFilter=" + encodeURIComponent("" + forHFilter) + "&";
+        if (maxDobFilter !== undefined && maxDobFilter !== null)
+            url_ += "MaxDobFilter=" + encodeURIComponent(maxDobFilter ? "" + maxDobFilter.toJSON() : "") + "&";
+        if (minDobFilter !== undefined && minDobFilter !== null)
+            url_ += "MinDobFilter=" + encodeURIComponent(minDobFilter ? "" + minDobFilter.toJSON() : "") + "&";
+        if (presentAddressFilter !== undefined && presentAddressFilter !== null)
+            url_ += "PresentAddressFilter=" + encodeURIComponent("" + presentAddressFilter) + "&";
+        if (permanentAddressFilter !== undefined && permanentAddressFilter !== null)
+            url_ += "PermanentAddressFilter=" + encodeURIComponent("" + permanentAddressFilter) + "&";
+        if (genderFilter !== undefined && genderFilter !== null)
+            url_ += "GenderFilter=" + encodeURIComponent("" + genderFilter) + "&";
+        if (contactNoFilter !== undefined && contactNoFilter !== null)
+            url_ += "ContactNoFilter=" + encodeURIComponent("" + contactNoFilter) + "&";
+        if (altContactNoFilter !== undefined && altContactNoFilter !== null)
+            url_ += "AltContactNoFilter=" + encodeURIComponent("" + altContactNoFilter) + "&";
+        if (maritalStatusFilter !== undefined && maritalStatusFilter !== null)
+            url_ += "MaritalStatusFilter=" + encodeURIComponent("" + maritalStatusFilter) + "&";
+        if (maxNoOfDependentsFilter !== undefined && maxNoOfDependentsFilter !== null)
+            url_ += "MaxNoOfDependentsFilter=" + encodeURIComponent("" + maxNoOfDependentsFilter) + "&";
+        if (minNoOfDependentsFilter !== undefined && minNoOfDependentsFilter !== null)
+            url_ += "MinNoOfDependentsFilter=" + encodeURIComponent("" + minNoOfDependentsFilter) + "&";
+        if (maxConfirmationDateFilter !== undefined && maxConfirmationDateFilter !== null)
+            url_ += "MaxConfirmationDateFilter=" + encodeURIComponent(maxConfirmationDateFilter ? "" + maxConfirmationDateFilter.toJSON() : "") + "&";
+        if (minConfirmationDateFilter !== undefined && minConfirmationDateFilter !== null)
+            url_ += "MinConfirmationDateFilter=" + encodeURIComponent(minConfirmationDateFilter ? "" + minConfirmationDateFilter.toJSON() : "") + "&";
+        if (maxDOJFilter !== undefined && maxDOJFilter !== null)
+            url_ += "MaxDOJFilter=" + encodeURIComponent(maxDOJFilter ? "" + maxDOJFilter.toJSON() : "") + "&";
+        if (minDOJFilter !== undefined && minDOJFilter !== null)
+            url_ += "MinDOJFilter=" + encodeURIComponent(minDOJFilter ? "" + minDOJFilter.toJSON() : "") + "&";
+        if (ihExpFilter !== undefined && ihExpFilter !== null)
+            url_ += "IhExpFilter=" + encodeURIComponent("" + ihExpFilter) + "&";
+        if (maxTotalExpFilter !== undefined && maxTotalExpFilter !== null)
+            url_ += "MaxTotalExpFilter=" + encodeURIComponent("" + maxTotalExpFilter) + "&";
+        if (minTotalExpFilter !== undefined && minTotalExpFilter !== null)
+            url_ += "MinTotalExpFilter=" + encodeURIComponent("" + minTotalExpFilter) + "&";
+        if (pfNoFilter !== undefined && pfNoFilter !== null)
+            url_ += "PfNoFilter=" + encodeURIComponent("" + pfNoFilter) + "&";
+        if (esiNoFilter !== undefined && esiNoFilter !== null)
+            url_ += "EsiNoFilter=" + encodeURIComponent("" + esiNoFilter) + "&";
+        if (acNoFilter !== undefined && acNoFilter !== null)
+            url_ += "AcNoFilter=" + encodeURIComponent("" + acNoFilter) + "&";
+        if (ppNoFilter !== undefined && ppNoFilter !== null)
+            url_ += "PpNoFilter=" + encodeURIComponent("" + ppNoFilter) + "&";
+        if (pANFilter !== undefined && pANFilter !== null)
+            url_ += "PANFilter=" + encodeURIComponent("" + pANFilter) + "&";
+        if (bGFilter !== undefined && bGFilter !== null)
+            url_ += "BGFilter=" + encodeURIComponent("" + bGFilter) + "&";
+        if (maxCLFilter !== undefined && maxCLFilter !== null)
+            url_ += "MaxCLFilter=" + encodeURIComponent("" + maxCLFilter) + "&";
+        if (minCLFilter !== undefined && minCLFilter !== null)
+            url_ += "MinCLFilter=" + encodeURIComponent("" + minCLFilter) + "&";
+        if (maxELFilter !== undefined && maxELFilter !== null)
+            url_ += "MaxELFilter=" + encodeURIComponent("" + maxELFilter) + "&";
+        if (minELFilter !== undefined && minELFilter !== null)
+            url_ += "MinELFilter=" + encodeURIComponent("" + minELFilter) + "&";
+        if (maxSLFilter !== undefined && maxSLFilter !== null)
+            url_ += "MaxSLFilter=" + encodeURIComponent("" + maxSLFilter) + "&";
+        if (minSLFilter !== undefined && minSLFilter !== null)
+            url_ += "MinSLFilter=" + encodeURIComponent("" + minSLFilter) + "&";
+        if (maxBasicSalaryFilter !== undefined && maxBasicSalaryFilter !== null)
+            url_ += "MaxBasicSalaryFilter=" + encodeURIComponent("" + maxBasicSalaryFilter) + "&";
+        if (minBasicSalaryFilter !== undefined && minBasicSalaryFilter !== null)
+            url_ += "MinBasicSalaryFilter=" + encodeURIComponent("" + minBasicSalaryFilter) + "&";
+        if (maxDAFilter !== undefined && maxDAFilter !== null)
+            url_ += "MaxDAFilter=" + encodeURIComponent("" + maxDAFilter) + "&";
+        if (minDAFilter !== undefined && minDAFilter !== null)
+            url_ += "MinDAFilter=" + encodeURIComponent("" + minDAFilter) + "&";
+        if (maxHRAFilter !== undefined && maxHRAFilter !== null)
+            url_ += "MaxHRAFilter=" + encodeURIComponent("" + maxHRAFilter) + "&";
+        if (minHRAFilter !== undefined && minHRAFilter !== null)
+            url_ += "MinHRAFilter=" + encodeURIComponent("" + minHRAFilter) + "&";
+        if (maxConveyanceFilter !== undefined && maxConveyanceFilter !== null)
+            url_ += "MaxConveyanceFilter=" + encodeURIComponent("" + maxConveyanceFilter) + "&";
+        if (minConveyanceFilter !== undefined && minConveyanceFilter !== null)
+            url_ += "MinConveyanceFilter=" + encodeURIComponent("" + minConveyanceFilter) + "&";
+        if (maxIncentiveFilter !== undefined && maxIncentiveFilter !== null)
+            url_ += "MaxIncentiveFilter=" + encodeURIComponent("" + maxIncentiveFilter) + "&";
+        if (minIncentiveFilter !== undefined && minIncentiveFilter !== null)
+            url_ += "MinIncentiveFilter=" + encodeURIComponent("" + minIncentiveFilter) + "&";
+        if (maxMedicalAllowanceFilter !== undefined && maxMedicalAllowanceFilter !== null)
+            url_ += "MaxMedicalAllowanceFilter=" + encodeURIComponent("" + maxMedicalAllowanceFilter) + "&";
+        if (minMedicalAllowanceFilter !== undefined && minMedicalAllowanceFilter !== null)
+            url_ += "MinMedicalAllowanceFilter=" + encodeURIComponent("" + minMedicalAllowanceFilter) + "&";
+        if (maxOtherAllowancesFilter !== undefined && maxOtherAllowancesFilter !== null)
+            url_ += "MaxOtherAllowancesFilter=" + encodeURIComponent("" + maxOtherAllowancesFilter) + "&";
+        if (minOtherAllowancesFilter !== undefined && minOtherAllowancesFilter !== null)
+            url_ += "MinOtherAllowancesFilter=" + encodeURIComponent("" + minOtherAllowancesFilter) + "&";
+        if (maxTotalSalaryFilter !== undefined && maxTotalSalaryFilter !== null)
+            url_ += "MaxTotalSalaryFilter=" + encodeURIComponent("" + maxTotalSalaryFilter) + "&";
+        if (minTotalSalaryFilter !== undefined && minTotalSalaryFilter !== null)
+            url_ += "MinTotalSalaryFilter=" + encodeURIComponent("" + minTotalSalaryFilter) + "&";
+        if (photoFilter !== undefined && photoFilter !== null)
+            url_ += "PhotoFilter=" + encodeURIComponent("" + photoFilter) + "&";
+        if (maxUanNoFilter !== undefined && maxUanNoFilter !== null)
+            url_ += "MaxUanNoFilter=" + encodeURIComponent("" + maxUanNoFilter) + "&";
+        if (minUanNoFilter !== undefined && minUanNoFilter !== null)
+            url_ += "MinUanNoFilter=" + encodeURIComponent("" + minUanNoFilter) + "&";
+        if (isActiveFilter !== undefined && isActiveFilter !== null)
+            url_ += "IsActiveFilter=" + encodeURIComponent("" + isActiveFilter) + "&";
+        if (employeementUnderFilter !== undefined && employeementUnderFilter !== null)
+            url_ += "EmployeementUnderFilter=" + encodeURIComponent("" + employeementUnderFilter) + "&";
+        if (divisionFilter !== undefined && divisionFilter !== null)
+            url_ += "DivisionFilter=" + encodeURIComponent("" + divisionFilter) + "&";
+        if (maxContractorIdFilter !== undefined && maxContractorIdFilter !== null)
+            url_ += "MaxContractorIdFilter=" + encodeURIComponent("" + maxContractorIdFilter) + "&";
+        if (minContractorIdFilter !== undefined && minContractorIdFilter !== null)
+            url_ += "MinContractorIdFilter=" + encodeURIComponent("" + minContractorIdFilter) + "&";
+        if (messBillFilter !== undefined && messBillFilter !== null)
+            url_ += "MessBillFilter=" + encodeURIComponent("" + messBillFilter) + "&";
+        if (onrollFilter !== undefined && onrollFilter !== null)
+            url_ += "OnrollFilter=" + encodeURIComponent("" + onrollFilter) + "&";
+        if (nameInTeluguFilter !== undefined && nameInTeluguFilter !== null)
+            url_ += "NameInTeluguFilter=" + encodeURIComponent("" + nameInTeluguFilter) + "&";
+        if (maxRjDateFilter !== undefined && maxRjDateFilter !== null)
+            url_ += "MaxRjDateFilter=" + encodeURIComponent(maxRjDateFilter ? "" + maxRjDateFilter.toJSON() : "") + "&";
+        if (minRjDateFilter !== undefined && minRjDateFilter !== null)
+            url_ += "MinRjDateFilter=" + encodeURIComponent(minRjDateFilter ? "" + minRjDateFilter.toJSON() : "") + "&";
+        if (documentFilter !== undefined && documentFilter !== null)
+            url_ += "DocumentFilter=" + encodeURIComponent("" + documentFilter) + "&";
+        if (extensionFilter !== undefined && extensionFilter !== null)
+            url_ += "ExtensionFilter=" + encodeURIComponent("" + extensionFilter) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetEmployeeInformationMastersToExcel(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetEmployeeInformationMastersToExcel(<any>response_);
+                } catch (e) {
+                    return <Observable<FileDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<FileDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetEmployeeInformationMastersToExcel(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<FileDto>(<any>null);
     }
 }
 
@@ -9549,6 +10661,422 @@ export class StripePaymentServiceProxy {
             }));
         }
         return _observableOf<StripePaymentResultOutput>(<any>null);
+    }
+}
+
+@Injectable()
+export class SubDepartmentsServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    /**
+     * @param filter (optional) 
+     * @param subNameFilter (optional) 
+     * @param departmentNameFilter (optional) 
+     * @param sorting (optional) 
+     * @param skipCount (optional) 
+     * @param maxResultCount (optional) 
+     * @return Success
+     */
+    getAll(filter: string | null | undefined, subNameFilter: string | null | undefined, departmentNameFilter: string | null | undefined, sorting: string | null | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfGetSubDepartmentForViewDto> {
+        let url_ = this.baseUrl + "/api/services/app/SubDepartments/GetAll?";
+        if (filter !== undefined && filter !== null)
+            url_ += "Filter=" + encodeURIComponent("" + filter) + "&";
+        if (subNameFilter !== undefined && subNameFilter !== null)
+            url_ += "SubNameFilter=" + encodeURIComponent("" + subNameFilter) + "&";
+        if (departmentNameFilter !== undefined && departmentNameFilter !== null)
+            url_ += "DepartmentNameFilter=" + encodeURIComponent("" + departmentNameFilter) + "&";
+        if (sorting !== undefined && sorting !== null)
+            url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&";
+        if (skipCount === null)
+            throw new Error("The parameter 'skipCount' cannot be null.");
+        else if (skipCount !== undefined)
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&";
+        if (maxResultCount === null)
+            throw new Error("The parameter 'maxResultCount' cannot be null.");
+        else if (maxResultCount !== undefined)
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAll(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAll(<any>response_);
+                } catch (e) {
+                    return <Observable<PagedResultDtoOfGetSubDepartmentForViewDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<PagedResultDtoOfGetSubDepartmentForViewDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAll(response: HttpResponseBase): Observable<PagedResultDtoOfGetSubDepartmentForViewDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfGetSubDepartmentForViewDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PagedResultDtoOfGetSubDepartmentForViewDto>(<any>null);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    getSubDepartmentForView(id: number | undefined): Observable<GetSubDepartmentForViewDto> {
+        let url_ = this.baseUrl + "/api/services/app/SubDepartments/GetSubDepartmentForView?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetSubDepartmentForView(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetSubDepartmentForView(<any>response_);
+                } catch (e) {
+                    return <Observable<GetSubDepartmentForViewDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<GetSubDepartmentForViewDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetSubDepartmentForView(response: HttpResponseBase): Observable<GetSubDepartmentForViewDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GetSubDepartmentForViewDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<GetSubDepartmentForViewDto>(<any>null);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    getSubDepartmentForEdit(id: number | undefined): Observable<GetSubDepartmentForEditOutput> {
+        let url_ = this.baseUrl + "/api/services/app/SubDepartments/GetSubDepartmentForEdit?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetSubDepartmentForEdit(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetSubDepartmentForEdit(<any>response_);
+                } catch (e) {
+                    return <Observable<GetSubDepartmentForEditOutput>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<GetSubDepartmentForEditOutput>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetSubDepartmentForEdit(response: HttpResponseBase): Observable<GetSubDepartmentForEditOutput> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GetSubDepartmentForEditOutput.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<GetSubDepartmentForEditOutput>(<any>null);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    createOrEdit(body: CreateOrEditSubDepartmentDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/SubDepartments/CreateOrEdit";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreateOrEdit(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreateOrEdit(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processCreateOrEdit(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    delete(id: number | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/SubDepartments/Delete?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDelete(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDelete(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processDelete(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @param filter (optional) 
+     * @param subNameFilter (optional) 
+     * @param departmentNameFilter (optional) 
+     * @return Success
+     */
+    getSubDepartmentsToExcel(filter: string | null | undefined, subNameFilter: string | null | undefined, departmentNameFilter: string | null | undefined): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/SubDepartments/GetSubDepartmentsToExcel?";
+        if (filter !== undefined && filter !== null)
+            url_ += "Filter=" + encodeURIComponent("" + filter) + "&";
+        if (subNameFilter !== undefined && subNameFilter !== null)
+            url_ += "SubNameFilter=" + encodeURIComponent("" + subNameFilter) + "&";
+        if (departmentNameFilter !== undefined && departmentNameFilter !== null)
+            url_ += "DepartmentNameFilter=" + encodeURIComponent("" + departmentNameFilter) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetSubDepartmentsToExcel(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetSubDepartmentsToExcel(<any>response_);
+                } catch (e) {
+                    return <Observable<FileDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<FileDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetSubDepartmentsToExcel(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<FileDto>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    getAllDepartmentForTableDropdown(): Observable<SubDepartmentDepartmentLookupTableDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/SubDepartments/GetAllDepartmentForTableDropdown";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAllDepartmentForTableDropdown(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAllDepartmentForTableDropdown(<any>response_);
+                } catch (e) {
+                    return <Observable<SubDepartmentDepartmentLookupTableDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<SubDepartmentDepartmentLookupTableDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAllDepartmentForTableDropdown(response: HttpResponseBase): Observable<SubDepartmentDepartmentLookupTableDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(SubDepartmentDepartmentLookupTableDto.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<SubDepartmentDepartmentLookupTableDto[]>(<any>null);
     }
 }
 
@@ -16338,6 +17866,206 @@ export interface IStringOutput {
     output: string | undefined;
 }
 
+export class DepartmentDto implements IDepartmentDto {
+    name!: string | undefined;
+    id!: number;
+
+    constructor(data?: IDepartmentDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.name = _data["name"];
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): DepartmentDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new DepartmentDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export interface IDepartmentDto {
+    name: string | undefined;
+    id: number;
+}
+
+export class GetDepartmentForViewDto implements IGetDepartmentForViewDto {
+    department!: DepartmentDto;
+
+    constructor(data?: IGetDepartmentForViewDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.department = _data["department"] ? DepartmentDto.fromJS(_data["department"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): GetDepartmentForViewDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetDepartmentForViewDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["department"] = this.department ? this.department.toJSON() : <any>undefined;
+        return data; 
+    }
+}
+
+export interface IGetDepartmentForViewDto {
+    department: DepartmentDto;
+}
+
+export class PagedResultDtoOfGetDepartmentForViewDto implements IPagedResultDtoOfGetDepartmentForViewDto {
+    totalCount!: number;
+    items!: GetDepartmentForViewDto[] | undefined;
+
+    constructor(data?: IPagedResultDtoOfGetDepartmentForViewDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.totalCount = _data["totalCount"];
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(GetDepartmentForViewDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfGetDepartmentForViewDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfGetDepartmentForViewDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["totalCount"] = this.totalCount;
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IPagedResultDtoOfGetDepartmentForViewDto {
+    totalCount: number;
+    items: GetDepartmentForViewDto[] | undefined;
+}
+
+export class CreateOrEditDepartmentDto implements ICreateOrEditDepartmentDto {
+    name!: string;
+    id!: number | undefined;
+
+    constructor(data?: ICreateOrEditDepartmentDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.name = _data["name"];
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): CreateOrEditDepartmentDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateOrEditDepartmentDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export interface ICreateOrEditDepartmentDto {
+    name: string;
+    id: number | undefined;
+}
+
+export class GetDepartmentForEditOutput implements IGetDepartmentForEditOutput {
+    department!: CreateOrEditDepartmentDto;
+
+    constructor(data?: IGetDepartmentForEditOutput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.department = _data["department"] ? CreateOrEditDepartmentDto.fromJS(_data["department"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): GetDepartmentForEditOutput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetDepartmentForEditOutput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["department"] = this.department ? this.department.toJSON() : <any>undefined;
+        return data; 
+    }
+}
+
+export interface IGetDepartmentForEditOutput {
+    department: CreateOrEditDepartmentDto;
+}
+
 export class DynamicEntityPropertyDto implements IDynamicEntityPropertyDto {
     entityFullName!: string | undefined;
     dynamicPropertyName!: string | undefined;
@@ -17784,6 +19512,574 @@ export class MoveTenantsToAnotherEditionDto implements IMoveTenantsToAnotherEdit
 export interface IMoveTenantsToAnotherEditionDto {
     sourceEditionId: number;
     targetEditionId: number;
+}
+
+export class EmployeeInformationMasterDto implements IEmployeeInformationMasterDto {
+    empId!: string | undefined;
+    bioId!: number | undefined;
+    internalId!: string | undefined;
+    doc!: DateTime | undefined;
+    name!: string | undefined;
+    forH!: string | undefined;
+    dob!: DateTime | undefined;
+    presentAddress!: string | undefined;
+    permanentAddress!: string | undefined;
+    gender!: string | undefined;
+    contactNo!: string | undefined;
+    altContactNo!: string | undefined;
+    maritalStatus!: string | undefined;
+    noOfDependents!: number | undefined;
+    confirmationDate!: DateTime | undefined;
+    doj!: DateTime | undefined;
+    ihExp!: string | undefined;
+    totalExp!: number | undefined;
+    pfNo!: string | undefined;
+    esiNo!: string | undefined;
+    acNo!: string | undefined;
+    ppNo!: string | undefined;
+    pan!: string | undefined;
+    bg!: string | undefined;
+    cl!: number | undefined;
+    el!: number | undefined;
+    sl!: number | undefined;
+    basicSalary!: number | undefined;
+    da!: number | undefined;
+    hra!: number | undefined;
+    conveyance!: number | undefined;
+    incentive!: number | undefined;
+    medicalAllowance!: number | undefined;
+    otherAllowances!: number | undefined;
+    totalSalary!: number | undefined;
+    photo!: string | undefined;
+    uanNo!: number | undefined;
+    isActive!: boolean;
+    employeementUnder!: string | undefined;
+    division!: string | undefined;
+    contractorId!: number | undefined;
+    messBill!: boolean;
+    onroll!: boolean;
+    nameInTelugu!: string | undefined;
+    rjDate!: DateTime | undefined;
+    document!: string | undefined;
+    extension!: string | undefined;
+    id!: number;
+
+    constructor(data?: IEmployeeInformationMasterDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.empId = _data["empId"];
+            this.bioId = _data["bioId"];
+            this.internalId = _data["internalId"];
+            this.doc = _data["doc"] ? DateTime.fromISO(_data["doc"].toString()) : <any>undefined;
+            this.name = _data["name"];
+            this.forH = _data["forH"];
+            this.dob = _data["dob"] ? DateTime.fromISO(_data["dob"].toString()) : <any>undefined;
+            this.presentAddress = _data["presentAddress"];
+            this.permanentAddress = _data["permanentAddress"];
+            this.gender = _data["gender"];
+            this.contactNo = _data["contactNo"];
+            this.altContactNo = _data["altContactNo"];
+            this.maritalStatus = _data["maritalStatus"];
+            this.noOfDependents = _data["noOfDependents"];
+            this.confirmationDate = _data["confirmationDate"] ? DateTime.fromISO(_data["confirmationDate"].toString()) : <any>undefined;
+            this.doj = _data["doj"] ? DateTime.fromISO(_data["doj"].toString()) : <any>undefined;
+            this.ihExp = _data["ihExp"];
+            this.totalExp = _data["totalExp"];
+            this.pfNo = _data["pfNo"];
+            this.esiNo = _data["esiNo"];
+            this.acNo = _data["acNo"];
+            this.ppNo = _data["ppNo"];
+            this.pan = _data["pan"];
+            this.bg = _data["bg"];
+            this.cl = _data["cl"];
+            this.el = _data["el"];
+            this.sl = _data["sl"];
+            this.basicSalary = _data["basicSalary"];
+            this.da = _data["da"];
+            this.hra = _data["hra"];
+            this.conveyance = _data["conveyance"];
+            this.incentive = _data["incentive"];
+            this.medicalAllowance = _data["medicalAllowance"];
+            this.otherAllowances = _data["otherAllowances"];
+            this.totalSalary = _data["totalSalary"];
+            this.photo = _data["photo"];
+            this.uanNo = _data["uanNo"];
+            this.isActive = _data["isActive"];
+            this.employeementUnder = _data["employeementUnder"];
+            this.division = _data["division"];
+            this.contractorId = _data["contractorId"];
+            this.messBill = _data["messBill"];
+            this.onroll = _data["onroll"];
+            this.nameInTelugu = _data["nameInTelugu"];
+            this.rjDate = _data["rjDate"] ? DateTime.fromISO(_data["rjDate"].toString()) : <any>undefined;
+            this.document = _data["document"];
+            this.extension = _data["extension"];
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): EmployeeInformationMasterDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new EmployeeInformationMasterDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["empId"] = this.empId;
+        data["bioId"] = this.bioId;
+        data["internalId"] = this.internalId;
+        data["doc"] = this.doc ? this.doc.toString() : <any>undefined;
+        data["name"] = this.name;
+        data["forH"] = this.forH;
+        data["dob"] = this.dob ? this.dob.toString() : <any>undefined;
+        data["presentAddress"] = this.presentAddress;
+        data["permanentAddress"] = this.permanentAddress;
+        data["gender"] = this.gender;
+        data["contactNo"] = this.contactNo;
+        data["altContactNo"] = this.altContactNo;
+        data["maritalStatus"] = this.maritalStatus;
+        data["noOfDependents"] = this.noOfDependents;
+        data["confirmationDate"] = this.confirmationDate ? this.confirmationDate.toString() : <any>undefined;
+        data["doj"] = this.doj ? this.doj.toString() : <any>undefined;
+        data["ihExp"] = this.ihExp;
+        data["totalExp"] = this.totalExp;
+        data["pfNo"] = this.pfNo;
+        data["esiNo"] = this.esiNo;
+        data["acNo"] = this.acNo;
+        data["ppNo"] = this.ppNo;
+        data["pan"] = this.pan;
+        data["bg"] = this.bg;
+        data["cl"] = this.cl;
+        data["el"] = this.el;
+        data["sl"] = this.sl;
+        data["basicSalary"] = this.basicSalary;
+        data["da"] = this.da;
+        data["hra"] = this.hra;
+        data["conveyance"] = this.conveyance;
+        data["incentive"] = this.incentive;
+        data["medicalAllowance"] = this.medicalAllowance;
+        data["otherAllowances"] = this.otherAllowances;
+        data["totalSalary"] = this.totalSalary;
+        data["photo"] = this.photo;
+        data["uanNo"] = this.uanNo;
+        data["isActive"] = this.isActive;
+        data["employeementUnder"] = this.employeementUnder;
+        data["division"] = this.division;
+        data["contractorId"] = this.contractorId;
+        data["messBill"] = this.messBill;
+        data["onroll"] = this.onroll;
+        data["nameInTelugu"] = this.nameInTelugu;
+        data["rjDate"] = this.rjDate ? this.rjDate.toString() : <any>undefined;
+        data["document"] = this.document;
+        data["extension"] = this.extension;
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export interface IEmployeeInformationMasterDto {
+    empId: string | undefined;
+    bioId: number | undefined;
+    internalId: string | undefined;
+    doc: DateTime | undefined;
+    name: string | undefined;
+    forH: string | undefined;
+    dob: DateTime | undefined;
+    presentAddress: string | undefined;
+    permanentAddress: string | undefined;
+    gender: string | undefined;
+    contactNo: string | undefined;
+    altContactNo: string | undefined;
+    maritalStatus: string | undefined;
+    noOfDependents: number | undefined;
+    confirmationDate: DateTime | undefined;
+    doj: DateTime | undefined;
+    ihExp: string | undefined;
+    totalExp: number | undefined;
+    pfNo: string | undefined;
+    esiNo: string | undefined;
+    acNo: string | undefined;
+    ppNo: string | undefined;
+    pan: string | undefined;
+    bg: string | undefined;
+    cl: number | undefined;
+    el: number | undefined;
+    sl: number | undefined;
+    basicSalary: number | undefined;
+    da: number | undefined;
+    hra: number | undefined;
+    conveyance: number | undefined;
+    incentive: number | undefined;
+    medicalAllowance: number | undefined;
+    otherAllowances: number | undefined;
+    totalSalary: number | undefined;
+    photo: string | undefined;
+    uanNo: number | undefined;
+    isActive: boolean;
+    employeementUnder: string | undefined;
+    division: string | undefined;
+    contractorId: number | undefined;
+    messBill: boolean;
+    onroll: boolean;
+    nameInTelugu: string | undefined;
+    rjDate: DateTime | undefined;
+    document: string | undefined;
+    extension: string | undefined;
+    id: number;
+}
+
+export class GetEmployeeInformationMasterForViewDto implements IGetEmployeeInformationMasterForViewDto {
+    employeeInformationMaster!: EmployeeInformationMasterDto;
+
+    constructor(data?: IGetEmployeeInformationMasterForViewDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.employeeInformationMaster = _data["employeeInformationMaster"] ? EmployeeInformationMasterDto.fromJS(_data["employeeInformationMaster"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): GetEmployeeInformationMasterForViewDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetEmployeeInformationMasterForViewDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["employeeInformationMaster"] = this.employeeInformationMaster ? this.employeeInformationMaster.toJSON() : <any>undefined;
+        return data; 
+    }
+}
+
+export interface IGetEmployeeInformationMasterForViewDto {
+    employeeInformationMaster: EmployeeInformationMasterDto;
+}
+
+export class PagedResultDtoOfGetEmployeeInformationMasterForViewDto implements IPagedResultDtoOfGetEmployeeInformationMasterForViewDto {
+    totalCount!: number;
+    items!: GetEmployeeInformationMasterForViewDto[] | undefined;
+
+    constructor(data?: IPagedResultDtoOfGetEmployeeInformationMasterForViewDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.totalCount = _data["totalCount"];
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(GetEmployeeInformationMasterForViewDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfGetEmployeeInformationMasterForViewDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfGetEmployeeInformationMasterForViewDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["totalCount"] = this.totalCount;
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IPagedResultDtoOfGetEmployeeInformationMasterForViewDto {
+    totalCount: number;
+    items: GetEmployeeInformationMasterForViewDto[] | undefined;
+}
+
+export class CreateOrEditEmployeeInformationMasterDto implements ICreateOrEditEmployeeInformationMasterDto {
+    empId!: string;
+    bioId!: number | undefined;
+    internalId!: string | undefined;
+    doc!: DateTime | undefined;
+    name!: string | undefined;
+    forH!: string | undefined;
+    dob!: DateTime | undefined;
+    presentAddress!: string | undefined;
+    permanentAddress!: string | undefined;
+    gender!: string | undefined;
+    contactNo!: string | undefined;
+    altContactNo!: string | undefined;
+    maritalStatus!: string | undefined;
+    noOfDependents!: number | undefined;
+    confirmationDate!: DateTime | undefined;
+    doj!: DateTime | undefined;
+    ihExp!: string | undefined;
+    totalExp!: number | undefined;
+    pfNo!: string | undefined;
+    esiNo!: string | undefined;
+    acNo!: string | undefined;
+    ppNo!: string | undefined;
+    pan!: string | undefined;
+    bg!: string | undefined;
+    cl!: number | undefined;
+    el!: number | undefined;
+    sl!: number | undefined;
+    basicSalary!: number | undefined;
+    da!: number | undefined;
+    hra!: number | undefined;
+    conveyance!: number | undefined;
+    incentive!: number | undefined;
+    medicalAllowance!: number | undefined;
+    otherAllowances!: number | undefined;
+    totalSalary!: number | undefined;
+    photo!: string | undefined;
+    uanNo!: number | undefined;
+    isActive!: boolean;
+    employeementUnder!: string | undefined;
+    division!: string | undefined;
+    contractorId!: number | undefined;
+    messBill!: boolean;
+    onroll!: boolean;
+    nameInTelugu!: string | undefined;
+    rjDate!: DateTime | undefined;
+    document!: string | undefined;
+    extension!: string | undefined;
+    id!: number | undefined;
+
+    constructor(data?: ICreateOrEditEmployeeInformationMasterDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.empId = _data["empId"];
+            this.bioId = _data["bioId"];
+            this.internalId = _data["internalId"];
+            this.doc = _data["doc"] ? DateTime.fromISO(_data["doc"].toString()) : <any>undefined;
+            this.name = _data["name"];
+            this.forH = _data["forH"];
+            this.dob = _data["dob"] ? DateTime.fromISO(_data["dob"].toString()) : <any>undefined;
+            this.presentAddress = _data["presentAddress"];
+            this.permanentAddress = _data["permanentAddress"];
+            this.gender = _data["gender"];
+            this.contactNo = _data["contactNo"];
+            this.altContactNo = _data["altContactNo"];
+            this.maritalStatus = _data["maritalStatus"];
+            this.noOfDependents = _data["noOfDependents"];
+            this.confirmationDate = _data["confirmationDate"] ? DateTime.fromISO(_data["confirmationDate"].toString()) : <any>undefined;
+            this.doj = _data["doj"] ? DateTime.fromISO(_data["doj"].toString()) : <any>undefined;
+            this.ihExp = _data["ihExp"];
+            this.totalExp = _data["totalExp"];
+            this.pfNo = _data["pfNo"];
+            this.esiNo = _data["esiNo"];
+            this.acNo = _data["acNo"];
+            this.ppNo = _data["ppNo"];
+            this.pan = _data["pan"];
+            this.bg = _data["bg"];
+            this.cl = _data["cl"];
+            this.el = _data["el"];
+            this.sl = _data["sl"];
+            this.basicSalary = _data["basicSalary"];
+            this.da = _data["da"];
+            this.hra = _data["hra"];
+            this.conveyance = _data["conveyance"];
+            this.incentive = _data["incentive"];
+            this.medicalAllowance = _data["medicalAllowance"];
+            this.otherAllowances = _data["otherAllowances"];
+            this.totalSalary = _data["totalSalary"];
+            this.photo = _data["photo"];
+            this.uanNo = _data["uanNo"];
+            this.isActive = _data["isActive"];
+            this.employeementUnder = _data["employeementUnder"];
+            this.division = _data["division"];
+            this.contractorId = _data["contractorId"];
+            this.messBill = _data["messBill"];
+            this.onroll = _data["onroll"];
+            this.nameInTelugu = _data["nameInTelugu"];
+            this.rjDate = _data["rjDate"] ? DateTime.fromISO(_data["rjDate"].toString()) : <any>undefined;
+            this.document = _data["document"];
+            this.extension = _data["extension"];
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): CreateOrEditEmployeeInformationMasterDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateOrEditEmployeeInformationMasterDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["empId"] = this.empId;
+        data["bioId"] = this.bioId;
+        data["internalId"] = this.internalId;
+        data["doc"] = this.doc ? this.doc.toString() : <any>undefined;
+        data["name"] = this.name;
+        data["forH"] = this.forH;
+        data["dob"] = this.dob ? this.dob.toString() : <any>undefined;
+        data["presentAddress"] = this.presentAddress;
+        data["permanentAddress"] = this.permanentAddress;
+        data["gender"] = this.gender;
+        data["contactNo"] = this.contactNo;
+        data["altContactNo"] = this.altContactNo;
+        data["maritalStatus"] = this.maritalStatus;
+        data["noOfDependents"] = this.noOfDependents;
+        data["confirmationDate"] = this.confirmationDate ? this.confirmationDate.toString() : <any>undefined;
+        data["doj"] = this.doj ? this.doj.toString() : <any>undefined;
+        data["ihExp"] = this.ihExp;
+        data["totalExp"] = this.totalExp;
+        data["pfNo"] = this.pfNo;
+        data["esiNo"] = this.esiNo;
+        data["acNo"] = this.acNo;
+        data["ppNo"] = this.ppNo;
+        data["pan"] = this.pan;
+        data["bg"] = this.bg;
+        data["cl"] = this.cl;
+        data["el"] = this.el;
+        data["sl"] = this.sl;
+        data["basicSalary"] = this.basicSalary;
+        data["da"] = this.da;
+        data["hra"] = this.hra;
+        data["conveyance"] = this.conveyance;
+        data["incentive"] = this.incentive;
+        data["medicalAllowance"] = this.medicalAllowance;
+        data["otherAllowances"] = this.otherAllowances;
+        data["totalSalary"] = this.totalSalary;
+        data["photo"] = this.photo;
+        data["uanNo"] = this.uanNo;
+        data["isActive"] = this.isActive;
+        data["employeementUnder"] = this.employeementUnder;
+        data["division"] = this.division;
+        data["contractorId"] = this.contractorId;
+        data["messBill"] = this.messBill;
+        data["onroll"] = this.onroll;
+        data["nameInTelugu"] = this.nameInTelugu;
+        data["rjDate"] = this.rjDate ? this.rjDate.toString() : <any>undefined;
+        data["document"] = this.document;
+        data["extension"] = this.extension;
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export interface ICreateOrEditEmployeeInformationMasterDto {
+    empId: string;
+    bioId: number | undefined;
+    internalId: string | undefined;
+    doc: DateTime | undefined;
+    name: string | undefined;
+    forH: string | undefined;
+    dob: DateTime | undefined;
+    presentAddress: string | undefined;
+    permanentAddress: string | undefined;
+    gender: string | undefined;
+    contactNo: string | undefined;
+    altContactNo: string | undefined;
+    maritalStatus: string | undefined;
+    noOfDependents: number | undefined;
+    confirmationDate: DateTime | undefined;
+    doj: DateTime | undefined;
+    ihExp: string | undefined;
+    totalExp: number | undefined;
+    pfNo: string | undefined;
+    esiNo: string | undefined;
+    acNo: string | undefined;
+    ppNo: string | undefined;
+    pan: string | undefined;
+    bg: string | undefined;
+    cl: number | undefined;
+    el: number | undefined;
+    sl: number | undefined;
+    basicSalary: number | undefined;
+    da: number | undefined;
+    hra: number | undefined;
+    conveyance: number | undefined;
+    incentive: number | undefined;
+    medicalAllowance: number | undefined;
+    otherAllowances: number | undefined;
+    totalSalary: number | undefined;
+    photo: string | undefined;
+    uanNo: number | undefined;
+    isActive: boolean;
+    employeementUnder: string | undefined;
+    division: string | undefined;
+    contractorId: number | undefined;
+    messBill: boolean;
+    onroll: boolean;
+    nameInTelugu: string | undefined;
+    rjDate: DateTime | undefined;
+    document: string | undefined;
+    extension: string | undefined;
+    id: number | undefined;
+}
+
+export class GetEmployeeInformationMasterForEditOutput implements IGetEmployeeInformationMasterForEditOutput {
+    employeeInformationMaster!: CreateOrEditEmployeeInformationMasterDto;
+
+    constructor(data?: IGetEmployeeInformationMasterForEditOutput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.employeeInformationMaster = _data["employeeInformationMaster"] ? CreateOrEditEmployeeInformationMasterDto.fromJS(_data["employeeInformationMaster"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): GetEmployeeInformationMasterForEditOutput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetEmployeeInformationMasterForEditOutput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["employeeInformationMaster"] = this.employeeInformationMaster ? this.employeeInformationMaster.toJSON() : <any>undefined;
+        return data; 
+    }
+}
+
+export interface IGetEmployeeInformationMasterForEditOutput {
+    employeeInformationMaster: CreateOrEditEmployeeInformationMasterDto;
 }
 
 export class CreateFriendshipRequestInput implements ICreateFriendshipRequestInput {
@@ -23678,6 +25974,262 @@ export class StripePaymentResultOutput implements IStripePaymentResultOutput {
 
 export interface IStripePaymentResultOutput {
     paymentDone: boolean;
+}
+
+export class SubDepartmentDto implements ISubDepartmentDto {
+    subName!: string | undefined;
+    name!: number | undefined;
+    id!: number;
+
+    constructor(data?: ISubDepartmentDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.subName = _data["subName"];
+            this.name = _data["name"];
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): SubDepartmentDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new SubDepartmentDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["subName"] = this.subName;
+        data["name"] = this.name;
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export interface ISubDepartmentDto {
+    subName: string | undefined;
+    name: number | undefined;
+    id: number;
+}
+
+export class GetSubDepartmentForViewDto implements IGetSubDepartmentForViewDto {
+    subDepartment!: SubDepartmentDto;
+    departmentName!: string | undefined;
+
+    constructor(data?: IGetSubDepartmentForViewDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.subDepartment = _data["subDepartment"] ? SubDepartmentDto.fromJS(_data["subDepartment"]) : <any>undefined;
+            this.departmentName = _data["departmentName"];
+        }
+    }
+
+    static fromJS(data: any): GetSubDepartmentForViewDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetSubDepartmentForViewDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["subDepartment"] = this.subDepartment ? this.subDepartment.toJSON() : <any>undefined;
+        data["departmentName"] = this.departmentName;
+        return data; 
+    }
+}
+
+export interface IGetSubDepartmentForViewDto {
+    subDepartment: SubDepartmentDto;
+    departmentName: string | undefined;
+}
+
+export class PagedResultDtoOfGetSubDepartmentForViewDto implements IPagedResultDtoOfGetSubDepartmentForViewDto {
+    totalCount!: number;
+    items!: GetSubDepartmentForViewDto[] | undefined;
+
+    constructor(data?: IPagedResultDtoOfGetSubDepartmentForViewDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.totalCount = _data["totalCount"];
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(GetSubDepartmentForViewDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfGetSubDepartmentForViewDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfGetSubDepartmentForViewDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["totalCount"] = this.totalCount;
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IPagedResultDtoOfGetSubDepartmentForViewDto {
+    totalCount: number;
+    items: GetSubDepartmentForViewDto[] | undefined;
+}
+
+export class CreateOrEditSubDepartmentDto implements ICreateOrEditSubDepartmentDto {
+    subName!: string | undefined;
+    name!: number | undefined;
+    id!: number | undefined;
+
+    constructor(data?: ICreateOrEditSubDepartmentDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.subName = _data["subName"];
+            this.name = _data["name"];
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): CreateOrEditSubDepartmentDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateOrEditSubDepartmentDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["subName"] = this.subName;
+        data["name"] = this.name;
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export interface ICreateOrEditSubDepartmentDto {
+    subName: string | undefined;
+    name: number | undefined;
+    id: number | undefined;
+}
+
+export class GetSubDepartmentForEditOutput implements IGetSubDepartmentForEditOutput {
+    subDepartment!: CreateOrEditSubDepartmentDto;
+    departmentName!: string | undefined;
+
+    constructor(data?: IGetSubDepartmentForEditOutput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.subDepartment = _data["subDepartment"] ? CreateOrEditSubDepartmentDto.fromJS(_data["subDepartment"]) : <any>undefined;
+            this.departmentName = _data["departmentName"];
+        }
+    }
+
+    static fromJS(data: any): GetSubDepartmentForEditOutput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetSubDepartmentForEditOutput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["subDepartment"] = this.subDepartment ? this.subDepartment.toJSON() : <any>undefined;
+        data["departmentName"] = this.departmentName;
+        return data; 
+    }
+}
+
+export interface IGetSubDepartmentForEditOutput {
+    subDepartment: CreateOrEditSubDepartmentDto;
+    departmentName: string | undefined;
+}
+
+export class SubDepartmentDepartmentLookupTableDto implements ISubDepartmentDepartmentLookupTableDto {
+    id!: number;
+    displayName!: string | undefined;
+
+    constructor(data?: ISubDepartmentDepartmentLookupTableDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.displayName = _data["displayName"];
+        }
+    }
+
+    static fromJS(data: any): SubDepartmentDepartmentLookupTableDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new SubDepartmentDepartmentLookupTableDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["displayName"] = this.displayName;
+        return data; 
+    }
+}
+
+export interface ISubDepartmentDepartmentLookupTableDto {
+    id: number;
+    displayName: string | undefined;
 }
 
 export class TenantListDto implements ITenantListDto {

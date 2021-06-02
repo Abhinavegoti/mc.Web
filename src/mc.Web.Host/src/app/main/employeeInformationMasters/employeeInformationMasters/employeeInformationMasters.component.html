@@ -1,0 +1,1366 @@
+﻿<div [@routerTransition]>
+  <div class="content d-flex flex-column flex-column-fluid">
+    <sub-header
+      [title]="'EmployeeInformationMasters' | localize"
+      [description]="'EmployeeInformationMastersHeaderInfo' | localize"
+    >
+      <div role="actions">
+        <button (click)="exportToExcel()" class="btn btn-outline-success">
+          <i class="fa fa-file-excel"></i> {{ l('ExportToExcel') }}
+        </button>
+
+        <button
+          *ngIf="isGranted('Pages.EmployeeInformationMasters.Create')"
+          (click)="createEmployeeInformationMaster()"
+          class="btn btn-primary blue"
+        >
+          <i class="fa fa-plus"></i> {{ l('CreateNewEmployeeInformation') }}
+        </button>
+      </div>
+    </sub-header>
+
+    <div [class]="containerClass">
+      <div class="card card-custom gutter-b">
+        <div class="card-body">
+          <form class="form" autocomplete="off">
+            <div>
+              <div class="row align-items-center">
+                <div class="col-xl-12">
+                  <div class="form-group m-form__group align-items-center">
+                    <div class="input-group">
+                      <input
+                        [(ngModel)]="filterText"
+                        name="filterText"
+                        autoFocus
+                        class="form-control m-input"
+                        [placeholder]="l('SearchWithThreeDot')"
+                        type="text"
+                      />
+                      <span class="input-group-btn">
+                        <button (click)="getEmployeeInformationMasters()" class="btn btn-primary" type="submit">
+                          <i class="flaticon-search-1"></i>
+                        </button>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row" [hidden]="!advancedFiltersAreShown">
+                <div class="col-md-12">
+                  <div class="separator separator-dashed"></div>
+                </div>
+
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="EmpIdFilter">{{ l('EmpId') }}</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="EmpIdFilter"
+                      name="empIdFilter"
+                      [(ngModel)]="empIdFilter"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="MinBioIdFilter">{{ l('MinMax') }} {{ l('BioId') }}</label>
+                    <div class="input-group">
+                      <input
+                        type="number"
+                        class="form-control"
+                        id="MinBioIdFilter"
+                        [(ngModel)]="minBioIdFilter"
+                        placeholder="{{ l('MinValue') }}"
+                        name="minBioIdFilter"
+                      />
+                      <input
+                        type="number"
+                        class="form-control"
+                        [(ngModel)]="maxBioIdFilter"
+                        placeholder="{{ l('MaxValue') }}"
+                        name="maxBioIdFilter"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="InternalIdFilter">{{ l('InternalId') }}</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="InternalIdFilter"
+                      name="internalIdFilter"
+                      [(ngModel)]="internalIdFilter"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="MinDocFilter">{{ l('DocRange') }}</label>
+                    <div class="input-group">
+                      <input
+                        class="form-control m-input"
+                        id="MinDocFilter"
+                        name="MinDocFilter"
+                        type="datetime"
+                        bsDatepicker
+                        placeholder="{{ l('MinValue') }}"
+                        [(ngModel)]="minDocFilter"
+                      />
+                      <span style="line-height: 40px; padding: 0 15px 0 15px"> &mdash; </span>
+                      <input
+                        class="form-control m-input"
+                        id="MaxDocFilter"
+                        name="MaxDocFilter"
+                        type="datetime"
+                        bsDatepicker
+                        placeholder="{{ l('MaxValue') }}"
+                        [(ngModel)]="maxDocFilter"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="NameFilter">{{ l('Name') }}</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="NameFilter"
+                      name="nameFilter"
+                      [(ngModel)]="nameFilter"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="ForHFilter">{{ l('ForH') }}</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="ForHFilter"
+                      name="forHFilter"
+                      [(ngModel)]="forHFilter"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="MinDobFilter">{{ l('DobRange') }}</label>
+                    <div class="input-group">
+                      <input
+                        class="form-control m-input"
+                        id="MinDobFilter"
+                        name="MinDobFilter"
+                        type="datetime"
+                        bsDatepicker
+                        placeholder="{{ l('MinValue') }}"
+                        [(ngModel)]="minDobFilter"
+                      />
+                      <span style="line-height: 40px; padding: 0 15px 0 15px"> &mdash; </span>
+                      <input
+                        class="form-control m-input"
+                        id="MaxDobFilter"
+                        name="MaxDobFilter"
+                        type="datetime"
+                        bsDatepicker
+                        placeholder="{{ l('MaxValue') }}"
+                        [(ngModel)]="maxDobFilter"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="PresentAddressFilter">{{ l('PresentAddress') }}</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="PresentAddressFilter"
+                      name="presentAddressFilter"
+                      [(ngModel)]="presentAddressFilter"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="PermanentAddressFilter">{{ l('PermanentAddress') }}</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="PermanentAddressFilter"
+                      name="permanentAddressFilter"
+                      [(ngModel)]="permanentAddressFilter"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="GenderFilter">{{ l('Gender') }}</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="GenderFilter"
+                      name="genderFilter"
+                      [(ngModel)]="genderFilter"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="ContactNoFilter">{{ l('ContactNo') }}</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="ContactNoFilter"
+                      name="contactNoFilter"
+                      [(ngModel)]="contactNoFilter"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="AltContactNoFilter">{{ l('AltContactNo') }}</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="AltContactNoFilter"
+                      name="altContactNoFilter"
+                      [(ngModel)]="altContactNoFilter"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="MaritalStatusFilter">{{ l('MaritalStatus') }}</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="MaritalStatusFilter"
+                      name="maritalStatusFilter"
+                      [(ngModel)]="maritalStatusFilter"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="MinNoOfDependentsFilter">{{ l('MinMax') }} {{ l('NoOfDependents') }}</label>
+                    <div class="input-group">
+                      <input
+                        type="number"
+                        class="form-control"
+                        id="MinNoOfDependentsFilter"
+                        [(ngModel)]="minNoOfDependentsFilter"
+                        placeholder="{{ l('MinValue') }}"
+                        name="minNoOfDependentsFilter"
+                      />
+                      <input
+                        type="number"
+                        class="form-control"
+                        [(ngModel)]="maxNoOfDependentsFilter"
+                        placeholder="{{ l('MaxValue') }}"
+                        name="maxNoOfDependentsFilter"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="MinConfirmationDateFilter">{{ l('ConfirmationDateRange') }}</label>
+                    <div class="input-group">
+                      <input
+                        class="form-control m-input"
+                        id="MinConfirmationDateFilter"
+                        name="MinConfirmationDateFilter"
+                        type="datetime"
+                        bsDatepicker
+                        placeholder="{{ l('MinValue') }}"
+                        [(ngModel)]="minConfirmationDateFilter"
+                      />
+                      <span style="line-height: 40px; padding: 0 15px 0 15px"> &mdash; </span>
+                      <input
+                        class="form-control m-input"
+                        id="MaxConfirmationDateFilter"
+                        name="MaxConfirmationDateFilter"
+                        type="datetime"
+                        bsDatepicker
+                        placeholder="{{ l('MaxValue') }}"
+                        [(ngModel)]="maxConfirmationDateFilter"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="MinDOJFilter">{{ l('DOJRange') }}</label>
+                    <div class="input-group">
+                      <input
+                        class="form-control m-input"
+                        id="MinDOJFilter"
+                        name="MinDOJFilter"
+                        type="datetime"
+                        bsDatepicker
+                        placeholder="{{ l('MinValue') }}"
+                        [(ngModel)]="minDOJFilter"
+                      />
+                      <span style="line-height: 40px; padding: 0 15px 0 15px"> &mdash; </span>
+                      <input
+                        class="form-control m-input"
+                        id="MaxDOJFilter"
+                        name="MaxDOJFilter"
+                        type="datetime"
+                        bsDatepicker
+                        placeholder="{{ l('MaxValue') }}"
+                        [(ngModel)]="maxDOJFilter"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="IhExpFilter">{{ l('IhExp') }}</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="IhExpFilter"
+                      name="ihExpFilter"
+                      [(ngModel)]="ihExpFilter"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="MinTotalExpFilter">{{ l('MinMax') }} {{ l('TotalExp') }}</label>
+                    <div class="input-group">
+                      <input
+                        type="number"
+                        class="form-control"
+                        id="MinTotalExpFilter"
+                        [(ngModel)]="minTotalExpFilter"
+                        placeholder="{{ l('MinValue') }}"
+                        name="minTotalExpFilter"
+                      />
+                      <input
+                        type="number"
+                        class="form-control"
+                        [(ngModel)]="maxTotalExpFilter"
+                        placeholder="{{ l('MaxValue') }}"
+                        name="maxTotalExpFilter"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="PfNoFilter">{{ l('PfNo') }}</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="PfNoFilter"
+                      name="pfNoFilter"
+                      [(ngModel)]="pfNoFilter"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="EsiNoFilter">{{ l('EsiNo') }}</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="EsiNoFilter"
+                      name="esiNoFilter"
+                      [(ngModel)]="esiNoFilter"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="AcNoFilter">{{ l('AcNo') }}</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="AcNoFilter"
+                      name="acNoFilter"
+                      [(ngModel)]="acNoFilter"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="PpNoFilter">{{ l('PpNo') }}</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="PpNoFilter"
+                      name="ppNoFilter"
+                      [(ngModel)]="ppNoFilter"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="PANFilter">{{ l('PAN') }}</label>
+                    <input type="text" class="form-control" id="PANFilter" name="panFilter" [(ngModel)]="panFilter" />
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="BGFilter">{{ l('BG') }}</label>
+                    <input type="text" class="form-control" id="BGFilter" name="bgFilter" [(ngModel)]="bgFilter" />
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="MinCLFilter">{{ l('MinMax') }} {{ l('CL') }}</label>
+                    <div class="input-group">
+                      <input
+                        type="number"
+                        class="form-control"
+                        id="MinCLFilter"
+                        [(ngModel)]="minCLFilter"
+                        placeholder="{{ l('MinValue') }}"
+                        name="minCLFilter"
+                      />
+                      <input
+                        type="number"
+                        class="form-control"
+                        [(ngModel)]="maxCLFilter"
+                        placeholder="{{ l('MaxValue') }}"
+                        name="maxCLFilter"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="MinELFilter">{{ l('MinMax') }} {{ l('EL') }}</label>
+                    <div class="input-group">
+                      <input
+                        type="number"
+                        class="form-control"
+                        id="MinELFilter"
+                        [(ngModel)]="minELFilter"
+                        placeholder="{{ l('MinValue') }}"
+                        name="minELFilter"
+                      />
+                      <input
+                        type="number"
+                        class="form-control"
+                        [(ngModel)]="maxELFilter"
+                        placeholder="{{ l('MaxValue') }}"
+                        name="maxELFilter"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="MinSLFilter">{{ l('MinMax') }} {{ l('SL') }}</label>
+                    <div class="input-group">
+                      <input
+                        type="number"
+                        class="form-control"
+                        id="MinSLFilter"
+                        [(ngModel)]="minSLFilter"
+                        placeholder="{{ l('MinValue') }}"
+                        name="minSLFilter"
+                      />
+                      <input
+                        type="number"
+                        class="form-control"
+                        [(ngModel)]="maxSLFilter"
+                        placeholder="{{ l('MaxValue') }}"
+                        name="maxSLFilter"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="MinBasicSalaryFilter">{{ l('MinMax') }} {{ l('BasicSalary') }}</label>
+                    <div class="input-group">
+                      <input
+                        type="number"
+                        class="form-control"
+                        id="MinBasicSalaryFilter"
+                        [(ngModel)]="minBasicSalaryFilter"
+                        placeholder="{{ l('MinValue') }}"
+                        name="minBasicSalaryFilter"
+                      />
+                      <input
+                        type="number"
+                        class="form-control"
+                        [(ngModel)]="maxBasicSalaryFilter"
+                        placeholder="{{ l('MaxValue') }}"
+                        name="maxBasicSalaryFilter"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="MinDAFilter">{{ l('MinMax') }} {{ l('DA') }}</label>
+                    <div class="input-group">
+                      <input
+                        type="number"
+                        class="form-control"
+                        id="MinDAFilter"
+                        [(ngModel)]="minDAFilter"
+                        placeholder="{{ l('MinValue') }}"
+                        name="minDAFilter"
+                      />
+                      <input
+                        type="number"
+                        class="form-control"
+                        [(ngModel)]="maxDAFilter"
+                        placeholder="{{ l('MaxValue') }}"
+                        name="maxDAFilter"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="MinHRAFilter">{{ l('MinMax') }} {{ l('HRA') }}</label>
+                    <div class="input-group">
+                      <input
+                        type="number"
+                        class="form-control"
+                        id="MinHRAFilter"
+                        [(ngModel)]="minHRAFilter"
+                        placeholder="{{ l('MinValue') }}"
+                        name="minHRAFilter"
+                      />
+                      <input
+                        type="number"
+                        class="form-control"
+                        [(ngModel)]="maxHRAFilter"
+                        placeholder="{{ l('MaxValue') }}"
+                        name="maxHRAFilter"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="MinConveyanceFilter">{{ l('MinMax') }} {{ l('Conveyance') }}</label>
+                    <div class="input-group">
+                      <input
+                        type="number"
+                        class="form-control"
+                        id="MinConveyanceFilter"
+                        [(ngModel)]="minConveyanceFilter"
+                        placeholder="{{ l('MinValue') }}"
+                        name="minConveyanceFilter"
+                      />
+                      <input
+                        type="number"
+                        class="form-control"
+                        [(ngModel)]="maxConveyanceFilter"
+                        placeholder="{{ l('MaxValue') }}"
+                        name="maxConveyanceFilter"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="MinIncentiveFilter">{{ l('MinMax') }} {{ l('Incentive') }}</label>
+                    <div class="input-group">
+                      <input
+                        type="number"
+                        class="form-control"
+                        id="MinIncentiveFilter"
+                        [(ngModel)]="minIncentiveFilter"
+                        placeholder="{{ l('MinValue') }}"
+                        name="minIncentiveFilter"
+                      />
+                      <input
+                        type="number"
+                        class="form-control"
+                        [(ngModel)]="maxIncentiveFilter"
+                        placeholder="{{ l('MaxValue') }}"
+                        name="maxIncentiveFilter"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="MinMedicalAllowanceFilter">{{ l('MinMax') }} {{ l('MedicalAllowance') }}</label>
+                    <div class="input-group">
+                      <input
+                        type="number"
+                        class="form-control"
+                        id="MinMedicalAllowanceFilter"
+                        [(ngModel)]="minMedicalAllowanceFilter"
+                        placeholder="{{ l('MinValue') }}"
+                        name="minMedicalAllowanceFilter"
+                      />
+                      <input
+                        type="number"
+                        class="form-control"
+                        [(ngModel)]="maxMedicalAllowanceFilter"
+                        placeholder="{{ l('MaxValue') }}"
+                        name="maxMedicalAllowanceFilter"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="MinOtherAllowancesFilter">{{ l('MinMax') }} {{ l('OtherAllowances') }}</label>
+                    <div class="input-group">
+                      <input
+                        type="number"
+                        class="form-control"
+                        id="MinOtherAllowancesFilter"
+                        [(ngModel)]="minOtherAllowancesFilter"
+                        placeholder="{{ l('MinValue') }}"
+                        name="minOtherAllowancesFilter"
+                      />
+                      <input
+                        type="number"
+                        class="form-control"
+                        [(ngModel)]="maxOtherAllowancesFilter"
+                        placeholder="{{ l('MaxValue') }}"
+                        name="maxOtherAllowancesFilter"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="MinTotalSalaryFilter">{{ l('MinMax') }} {{ l('TotalSalary') }}</label>
+                    <div class="input-group">
+                      <input
+                        type="number"
+                        class="form-control"
+                        id="MinTotalSalaryFilter"
+                        [(ngModel)]="minTotalSalaryFilter"
+                        placeholder="{{ l('MinValue') }}"
+                        name="minTotalSalaryFilter"
+                      />
+                      <input
+                        type="number"
+                        class="form-control"
+                        [(ngModel)]="maxTotalSalaryFilter"
+                        placeholder="{{ l('MaxValue') }}"
+                        name="maxTotalSalaryFilter"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="PhotoFilter">{{ l('Photo') }}</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="PhotoFilter"
+                      name="photoFilter"
+                      [(ngModel)]="photoFilter"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="MinUanNoFilter">{{ l('MinMax') }} {{ l('UanNo') }}</label>
+                    <div class="input-group">
+                      <input
+                        type="number"
+                        class="form-control"
+                        id="MinUanNoFilter"
+                        [(ngModel)]="minUanNoFilter"
+                        placeholder="{{ l('MinValue') }}"
+                        name="minUanNoFilter"
+                      />
+                      <input
+                        type="number"
+                        class="form-control"
+                        [(ngModel)]="maxUanNoFilter"
+                        placeholder="{{ l('MaxValue') }}"
+                        name="maxUanNoFilter"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <label for="IsActiveFilterSelect">{{ l('IsActive') }}</label>
+                  <select
+                    class="form-control"
+                    name="IsActiveFilter"
+                    id="IsActiveFilterSelect"
+                    [(ngModel)]="isActiveFilter"
+                  >
+                    <option value="-1">{{ l('All') }}</option>
+                    <option value="0">{{ l('False') }}</option>
+                    <option value="1">{{ l('True') }}</option>
+                  </select>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="EmployeementUnderFilter">{{ l('EmployeementUnder') }}</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="EmployeementUnderFilter"
+                      name="employeementUnderFilter"
+                      [(ngModel)]="employeementUnderFilter"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="DivisionFilter">{{ l('Division') }}</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="DivisionFilter"
+                      name="divisionFilter"
+                      [(ngModel)]="divisionFilter"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="MinContractorIdFilter">{{ l('MinMax') }} {{ l('ContractorId') }}</label>
+                    <div class="input-group">
+                      <input
+                        type="number"
+                        class="form-control"
+                        id="MinContractorIdFilter"
+                        [(ngModel)]="minContractorIdFilter"
+                        placeholder="{{ l('MinValue') }}"
+                        name="minContractorIdFilter"
+                      />
+                      <input
+                        type="number"
+                        class="form-control"
+                        [(ngModel)]="maxContractorIdFilter"
+                        placeholder="{{ l('MaxValue') }}"
+                        name="maxContractorIdFilter"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <label for="MessBillFilterSelect">{{ l('MessBill') }}</label>
+                  <select
+                    class="form-control"
+                    name="MessBillFilter"
+                    id="MessBillFilterSelect"
+                    [(ngModel)]="messBillFilter"
+                  >
+                    <option value="-1">{{ l('All') }}</option>
+                    <option value="0">{{ l('False') }}</option>
+                    <option value="1">{{ l('True') }}</option>
+                  </select>
+                </div>
+                <div class="col-md-3">
+                  <label for="OnrollFilterSelect">{{ l('Onroll') }}</label>
+                  <select class="form-control" name="OnrollFilter" id="OnrollFilterSelect" [(ngModel)]="onrollFilter">
+                    <option value="-1">{{ l('All') }}</option>
+                    <option value="0">{{ l('False') }}</option>
+                    <option value="1">{{ l('True') }}</option>
+                  </select>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="NameInTeluguFilter">{{ l('NameInTelugu') }}</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="NameInTeluguFilter"
+                      name="nameInTeluguFilter"
+                      [(ngModel)]="nameInTeluguFilter"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="MinRjDateFilter">{{ l('RjDateRange') }}</label>
+                    <div class="input-group">
+                      <input
+                        class="form-control m-input"
+                        id="MinRjDateFilter"
+                        name="MinRjDateFilter"
+                        type="datetime"
+                        bsDatepicker
+                        placeholder="{{ l('MinValue') }}"
+                        [(ngModel)]="minRjDateFilter"
+                      />
+                      <span style="line-height: 40px; padding: 0 15px 0 15px"> &mdash; </span>
+                      <input
+                        class="form-control m-input"
+                        id="MaxRjDateFilter"
+                        name="MaxRjDateFilter"
+                        type="datetime"
+                        bsDatepicker
+                        placeholder="{{ l('MaxValue') }}"
+                        [(ngModel)]="maxRjDateFilter"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="DocumentFilter">{{ l('Document') }}</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="DocumentFilter"
+                      name="documentFilter"
+                      [(ngModel)]="documentFilter"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="ExtensionFilter">{{ l('Extension') }}</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="ExtensionFilter"
+                      name="extensionFilter"
+                      [(ngModel)]="extensionFilter"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="row mb-2">
+                <div class="col-sm-12">
+                  <span
+                    class="clickable-item text-muted"
+                    *ngIf="!advancedFiltersAreShown"
+                    (click)="advancedFiltersAreShown = !advancedFiltersAreShown"
+                    ><i class="fa fa-angle-down"></i> {{ l('ShowAdvancedFilters') }}</span
+                  >
+                  <span
+                    class="clickable-item text-muted"
+                    *ngIf="advancedFiltersAreShown"
+                    (click)="advancedFiltersAreShown = !advancedFiltersAreShown"
+                    ><i class="fa fa-angle-up"></i> {{ l('HideAdvancedFilters') }}</span
+                  >
+                </div>
+              </div>
+            </div>
+          </form>
+
+          <div class="row align-items-center">
+            <!--<Primeng-Datatable-Start>-->
+            <div class="primeng-datatable-container col-12" [busyIf]="primengTableHelper.isLoading">
+              <p-table
+                #dataTable
+                (onLazyLoad)="getEmployeeInformationMasters($event)"
+                [value]="primengTableHelper.records"
+                rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                [paginator]="false"
+                [lazy]="true"
+                [scrollable]="true"
+                ScrollWidth="100%"
+                [responsive]="primengTableHelper.isResponsive"
+                [resizableColumns]="primengTableHelper.resizableColumns"
+              >
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th
+                      style="width: 130px"
+                      [hidden]="
+                        !isGrantedAny(
+                          'Pages.EmployeeInformationMasters.Edit',
+                          'Pages.EmployeeInformationMasters.Delete'
+                        )
+                      "
+                    >
+                      {{ l('Actions') }}
+                    </th>
+                    <th style="width: 150px" pSortableColumn="empId">
+                      {{ l('EmpId') }}
+                      <p-sortIcon field="employeeInformationMaster.empId"></p-sortIcon>
+                    </th>
+                    <th style="width: 150px" pSortableColumn="bioId">
+                      {{ l('BioId') }}
+                      <p-sortIcon field="employeeInformationMaster.bioId"></p-sortIcon>
+                    </th>
+                    <th style="width: 150px" pSortableColumn="internalId">
+                      {{ l('InternalId') }}
+                      <p-sortIcon field="employeeInformationMaster.internalId"></p-sortIcon>
+                    </th>
+                    <th style="width: 150px" pSortableColumn="doc">
+                      {{ l('Doc') }}
+                      <p-sortIcon field="employeeInformationMaster.doc"></p-sortIcon>
+                    </th>
+                    <th style="width: 150px" pSortableColumn="name">
+                      {{ l('Name') }}
+                      <p-sortIcon field="employeeInformationMaster.name"></p-sortIcon>
+                    </th>
+                    <th style="width: 150px" pSortableColumn="forH">
+                      {{ l('F or H') }}
+                      <p-sortIcon field="employeeInformationMaster.forH"></p-sortIcon>
+                    </th>
+                    <th style="width: 150px" pSortableColumn="dob">
+                      {{ l('Dob') }}
+                      <p-sortIcon field="employeeInformationMaster.dob"></p-sortIcon>
+                    </th>
+                    <th style="width: 150px" pSortableColumn="presentAddress">
+                      {{ l('PresentAddress') }}
+                      <p-sortIcon field="employeeInformationMaster.presentAddress"></p-sortIcon>
+                    </th>
+                    <th style="width: 150px" pSortableColumn="permanentAddress">
+                      {{ l('PermanentAddress') }}
+                      <p-sortIcon field="employeeInformationMaster.permanentAddress"></p-sortIcon>
+                    </th>
+                    <th style="width: 150px" pSortableColumn="gender">
+                      {{ l('Gender') }}
+                      <p-sortIcon field="employeeInformationMaster.gender"></p-sortIcon>
+                    </th>
+                    <th style="width: 150px" pSortableColumn="contactNo">
+                      {{ l('ContactNo') }}
+                      <p-sortIcon field="employeeInformationMaster.contactNo"></p-sortIcon>
+                    </th>
+                    <th style="width: 150px" pSortableColumn="altContactNo">
+                      {{ l('AltContactNo') }}
+                      <p-sortIcon field="employeeInformationMaster.altContactNo"></p-sortIcon>
+                    </th>
+                    <th style="width: 150px" pSortableColumn="maritalStatus">
+                      {{ l('MaritalStatus') }}
+                      <p-sortIcon field="employeeInformationMaster.maritalStatus"></p-sortIcon>
+                    </th>
+                    <th style="width: 150px" pSortableColumn="noOfDependents">
+                      {{ l('NoOfDependents') }}
+                      <p-sortIcon field="employeeInformationMaster.noOfDependents"></p-sortIcon>
+                    </th>
+                    <th style="width: 150px" pSortableColumn="confirmationDate">
+                      {{ l('ConfirmationDate') }}
+                      <p-sortIcon field="employeeInformationMaster.confirmationDate"></p-sortIcon>
+                    </th>
+                    <th style="width: 150px" pSortableColumn="doj">
+                      {{ l('DOJ') }}
+                      <p-sortIcon field="employeeInformationMaster.doj"></p-sortIcon>
+                    </th>
+                    <th style="width: 150px" pSortableColumn="ihExp">
+                      {{ l('IhExp') }}
+                      <p-sortIcon field="employeeInformationMaster.ihExp"></p-sortIcon>
+                    </th>
+                    <th style="width: 150px" pSortableColumn="totalExp">
+                      {{ l('TotalExp') }}
+                      <p-sortIcon field="employeeInformationMaster.totalExp"></p-sortIcon>
+                    </th>
+                    <th style="width: 150px" pSortableColumn="pfNo">
+                      {{ l('PfNo') }}
+                      <p-sortIcon field="employeeInformationMaster.pfNo"></p-sortIcon>
+                    </th>
+                    <th style="width: 150px" pSortableColumn="esiNo">
+                      {{ l('EsiNo') }}
+                      <p-sortIcon field="employeeInformationMaster.esiNo"></p-sortIcon>
+                    </th>
+                    <th style="width: 150px" pSortableColumn="acNo">
+                      {{ l('AcNo') }}
+                      <p-sortIcon field="employeeInformationMaster.acNo"></p-sortIcon>
+                    </th>
+                    <th style="width: 150px" pSortableColumn="ppNo">
+                      {{ l('PpNo') }}
+                      <p-sortIcon field="employeeInformationMaster.ppNo"></p-sortIcon>
+                    </th>
+                    <th style="width: 150px" pSortableColumn="pan">
+                      {{ l('PAN') }}
+                      <p-sortIcon field="employeeInformationMaster.pan"></p-sortIcon>
+                    </th>
+                    <th style="width: 150px" pSortableColumn="bg">
+                      {{ l('BG') }}
+                      <p-sortIcon field="employeeInformationMaster.bg"></p-sortIcon>
+                    </th>
+                    <th style="width: 150px" pSortableColumn="cl">
+                      {{ l('CL') }}
+                      <p-sortIcon field="employeeInformationMaster.cl"></p-sortIcon>
+                    </th>
+                    <th style="width: 150px" pSortableColumn="el">
+                      {{ l('EL') }}
+                      <p-sortIcon field="employeeInformationMaster.el"></p-sortIcon>
+                    </th>
+                    <th style="width: 150px" pSortableColumn="sl">
+                      {{ l('SL') }}
+                      <p-sortIcon field="employeeInformationMaster.sl"></p-sortIcon>
+                    </th>
+                    <th style="width: 150px" pSortableColumn="basicSalary">
+                      {{ l('BasicSalary') }}
+                      <p-sortIcon field="employeeInformationMaster.basicSalary"></p-sortIcon>
+                    </th>
+                    <th style="width: 150px" pSortableColumn="da">
+                      {{ l('DA') }}
+                      <p-sortIcon field="employeeInformationMaster.da"></p-sortIcon>
+                    </th>
+                    <th style="width: 150px" pSortableColumn="hra">
+                      {{ l('HRA') }}
+                      <p-sortIcon field="employeeInformationMaster.hra"></p-sortIcon>
+                    </th>
+                    <th style="width: 150px" pSortableColumn="conveyance">
+                      {{ l('Conveyance') }}
+                      <p-sortIcon field="employeeInformationMaster.conveyance"></p-sortIcon>
+                    </th>
+                    <th style="width: 150px" pSortableColumn="incentive">
+                      {{ l('Incentive') }}
+                      <p-sortIcon field="employeeInformationMaster.incentive"></p-sortIcon>
+                    </th>
+                    <th style="width: 150px" pSortableColumn="medicalAllowance">
+                      {{ l('MedicalAllowance') }}
+                      <p-sortIcon field="employeeInformationMaster.medicalAllowance"></p-sortIcon>
+                    </th>
+                    <th style="width: 150px" pSortableColumn="otherAllowances">
+                      {{ l('OtherAllowances') }}
+                      <p-sortIcon field="employeeInformationMaster.otherAllowances"></p-sortIcon>
+                    </th>
+                    <th style="width: 150px" pSortableColumn="totalSalary">
+                      {{ l('TotalSalary') }}
+                      <p-sortIcon field="employeeInformationMaster.totalSalary"></p-sortIcon>
+                    </th>
+                    <th style="width: 150px" pSortableColumn="photo">
+                      {{ l('Photo') }}
+                      <p-sortIcon field="employeeInformationMaster.photo"></p-sortIcon>
+                    </th>
+                    <th style="width: 150px" pSortableColumn="uanNo">
+                      {{ l('UanNo') }}
+                      <p-sortIcon field="employeeInformationMaster.uanNo"></p-sortIcon>
+                    </th>
+                    <th style="width: 150px" pSortableColumn="isActive">
+                      {{ l('IsActive') }}
+                      <p-sortIcon field="employeeInformationMaster.isActive"></p-sortIcon>
+                    </th>
+                    <th style="width: 150px" pSortableColumn="employeementUnder">
+                      {{ l('EmployeementUnder') }}
+                      <p-sortIcon field="employeeInformationMaster.employeementUnder"></p-sortIcon>
+                    </th>
+                    <th style="width: 150px" pSortableColumn="division">
+                      {{ l('Division') }}
+                      <p-sortIcon field="employeeInformationMaster.division"></p-sortIcon>
+                    </th>
+                    <th style="width: 150px" pSortableColumn="contractorId">
+                      {{ l('ContractorId') }}
+                      <p-sortIcon field="employeeInformationMaster.contractorId"></p-sortIcon>
+                    </th>
+                    <th style="width: 150px" pSortableColumn="messBill">
+                      {{ l('MessBill') }}
+                      <p-sortIcon field="employeeInformationMaster.messBill"></p-sortIcon>
+                    </th>
+                    <th style="width: 150px" pSortableColumn="onroll">
+                      {{ l('Onroll') }}
+                      <p-sortIcon field="employeeInformationMaster.onroll"></p-sortIcon>
+                    </th>
+                    <th style="width: 150px" pSortableColumn="nameInTelugu">
+                      {{ l('NameInTelugu') }}
+                      <p-sortIcon field="employeeInformationMaster.nameInTelugu"></p-sortIcon>
+                    </th>
+                    <th style="width: 150px" pSortableColumn="rjDate">
+                      {{ l('RjDate') }}
+                      <p-sortIcon field="employeeInformationMaster.rjDate"></p-sortIcon>
+                    </th>
+                    <th style="width: 150px" pSortableColumn="document">
+                      {{ l('Document') }}
+                      <p-sortIcon field="employeeInformationMaster.document"></p-sortIcon>
+                    </th>
+                    <th style="width: 150px" pSortableColumn="extension">
+                      {{ l('Extension') }}
+                      <p-sortIcon field="employeeInformationMaster.extension"></p-sortIcon>
+                    </th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-record="$implicit" let-i="rowIndex">
+                  <tr>
+                    <td
+                      style="width: 130px"
+                      [hidden]="
+                        !isGrantedAny(
+                          'Pages.EmployeeInformationMasters.Edit',
+                          'Pages.EmployeeInformationMasters.Delete'
+                        )
+                      "
+                    >
+                      <div class="btn-group dropdown" dropdown container="body">
+                        <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
+                          <i class="fa fa-cog"></i><span class="caret"></span> {{ l('Actions') }}
+                        </button>
+                        <ul class="dropdown-menu" *dropdownMenu>
+                          <li>
+                            <a
+                              href="javascript:;"
+                              class="dropdown-item"
+                              (click)="viewEmployeeInformationMasterModal.show(record)"
+                              >{{ l('View') }}</a
+                            >
+                          </li>
+                          <li>
+                            <a
+                              href="javascript:;"
+                              *ngIf="permission.isGranted('Pages.EmployeeInformationMasters.Edit')"
+                              class="dropdown-item"
+                              (click)="
+                                createOrEditEmployeeInformationMasterModal.show(record.employeeInformationMaster.id)
+                              "
+                              >{{ l('Edit') }}</a
+                            >
+                          </li>
+                          <li>
+                            <a
+                              class="dropdown-item"
+                              href="javascript:;"
+                              *ngIf="permission.isGranted('Pages.EmployeeInformationMasters.Delete')"
+                              (click)="deleteEmployeeInformationMaster(record.employeeInformationMaster)"
+                              >{{ l('Delete') }}</a
+                            >
+                          </li>
+                        </ul>
+                      </div>
+                    </td>
+                    <td style="width: 150px">
+                      <span class="p-column-title"> {{ l('EmpId') }}</span>
+                      {{ record.employeeInformationMaster.empId }}
+                    </td>
+                    <td style="width: 150px">
+                      <span class="p-column-title"> {{ l('BioId') }}</span>
+                      {{ record.employeeInformationMaster.bioId }}
+                    </td>
+                    <td style="width: 150px">
+                      <span class="p-column-title"> {{ l('InternalId') }}</span>
+                      {{ record.employeeInformationMaster.internalId }}
+                    </td>
+                    <td style="width: 150px">
+                      <span class="p-column-title"> {{ l('Doc') }}</span>
+                      <span *ngIf="record.employeeInformationMaster.doc">
+                        {{ record.employeeInformationMaster.doc | luxonFormat: 'F' }}
+                      </span>
+                      <span *ngIf="!record.employeeInformationMaster.doc">-</span>
+                    </td>
+                    <td style="width: 150px">
+                      <span class="p-column-title"> {{ l('Name') }}</span>
+                      {{ record.employeeInformationMaster.name }}
+                    </td>
+                    <td style="width: 150px">
+                      <span class="p-column-title"> {{ l('ForH') }}</span>
+                      {{ record.employeeInformationMaster.forH }}
+                    </td>
+                    <td style="width: 150px">
+                      <span class="p-column-title"> {{ l('Dob') }}</span>
+                      <span *ngIf="record.employeeInformationMaster.dob">
+                        {{ record.employeeInformationMaster.dob | luxonFormat: 'F' }}
+                      </span>
+                      <span *ngIf="!record.employeeInformationMaster.dob">-</span>
+                    </td>
+                    <td style="width: 150px">
+                      <span class="p-column-title"> {{ l('PresentAddress') }}</span>
+                      {{ record.employeeInformationMaster.presentAddress }}
+                    </td>
+                    <td style="width: 150px">
+                      <span class="p-column-title"> {{ l('PermanentAddress') }}</span>
+                      {{ record.employeeInformationMaster.permanentAddress }}
+                    </td>
+                    <td style="width: 150px">
+                      <span class="p-column-title"> {{ l('Gender') }}</span>
+                      {{ record.employeeInformationMaster.gender }}
+                    </td>
+                    <td style="width: 150px">
+                      <span class="p-column-title"> {{ l('ContactNo') }}</span>
+                      {{ record.employeeInformationMaster.contactNo }}
+                    </td>
+                    <td style="width: 150px">
+                      <span class="p-column-title"> {{ l('AltContactNo') }}</span>
+                      {{ record.employeeInformationMaster.altContactNo }}
+                    </td>
+                    <td style="width: 150px">
+                      <span class="p-column-title"> {{ l('MaritalStatus') }}</span>
+                      {{ record.employeeInformationMaster.maritalStatus }}
+                    </td>
+                    <td style="width: 150px">
+                      <span class="p-column-title"> {{ l('NoOfDependents') }}</span>
+                      {{ record.employeeInformationMaster.noOfDependents }}
+                    </td>
+                    <td style="width: 150px">
+                      <span class="p-column-title"> {{ l('ConfirmationDate') }}</span>
+                      <span *ngIf="record.employeeInformationMaster.confirmationDate">
+                        {{ record.employeeInformationMaster.confirmationDate | luxonFormat: 'F' }}
+                      </span>
+                      <span *ngIf="!record.employeeInformationMaster.confirmationDate">-</span>
+                    </td>
+                    <td style="width: 150px">
+                      <span class="p-column-title"> {{ l('DOJ') }}</span>
+                      <span *ngIf="record.employeeInformationMaster.doj">
+                        {{ record.employeeInformationMaster.doj | luxonFormat: 'F' }}
+                      </span>
+                      <span *ngIf="!record.employeeInformationMaster.doj">-</span>
+                    </td>
+                    <td style="width: 150px">
+                      <span class="p-column-title"> {{ l('IhExp') }}</span>
+                      {{ record.employeeInformationMaster.ihExp }}
+                    </td>
+                    <td style="width: 150px">
+                      <span class="p-column-title"> {{ l('TotalExp') }}</span>
+                      {{ record.employeeInformationMaster.totalExp }}
+                    </td>
+                    <td style="width: 150px">
+                      <span class="p-column-title"> {{ l('PfNo') }}</span>
+                      {{ record.employeeInformationMaster.pfNo }}
+                    </td>
+                    <td style="width: 150px">
+                      <span class="p-column-title"> {{ l('EsiNo') }}</span>
+                      {{ record.employeeInformationMaster.esiNo }}
+                    </td>
+                    <td style="width: 150px">
+                      <span class="p-column-title"> {{ l('AcNo') }}</span>
+                      {{ record.employeeInformationMaster.acNo }}
+                    </td>
+                    <td style="width: 150px">
+                      <span class="p-column-title"> {{ l('PpNo') }}</span>
+                      {{ record.employeeInformationMaster.ppNo }}
+                    </td>
+                    <td style="width: 150px">
+                      <span class="p-column-title"> {{ l('PAN') }}</span>
+                      {{ record.employeeInformationMaster.pan }}
+                    </td>
+                    <td style="width: 150px">
+                      <span class="p-column-title"> {{ l('BG') }}</span>
+                      {{ record.employeeInformationMaster.bg }}
+                    </td>
+                    <td style="width: 150px">
+                      <span class="p-column-title"> {{ l('CL') }}</span>
+                      {{ record.employeeInformationMaster.cl }}
+                    </td>
+                    <td style="width: 150px">
+                      <span class="p-column-title"> {{ l('EL') }}</span>
+                      {{ record.employeeInformationMaster.el }}
+                    </td>
+                    <td style="width: 150px">
+                      <span class="p-column-title"> {{ l('SL') }}</span>
+                      {{ record.employeeInformationMaster.sl }}
+                    </td>
+                    <td style="width: 150px">
+                      <span class="p-column-title"> {{ l('BasicSalary') }}</span>
+                      {{ record.employeeInformationMaster.basicSalary }}
+                    </td>
+                    <td style="width: 150px">
+                      <span class="p-column-title"> {{ l('DA') }}</span>
+                      {{ record.employeeInformationMaster.da }}
+                    </td>
+                    <td style="width: 150px">
+                      <span class="p-column-title"> {{ l('HRA') }}</span>
+                      {{ record.employeeInformationMaster.hra }}
+                    </td>
+                    <td style="width: 150px">
+                      <span class="p-column-title"> {{ l('Conveyance') }}</span>
+                      {{ record.employeeInformationMaster.conveyance }}
+                    </td>
+                    <td style="width: 150px">
+                      <span class="p-column-title"> {{ l('Incentive') }}</span>
+                      {{ record.employeeInformationMaster.incentive }}
+                    </td>
+                    <td style="width: 150px">
+                      <span class="p-column-title"> {{ l('MedicalAllowance') }}</span>
+                      {{ record.employeeInformationMaster.medicalAllowance }}
+                    </td>
+                    <td style="width: 150px">
+                      <span class="p-column-title"> {{ l('OtherAllowances') }}</span>
+                      {{ record.employeeInformationMaster.otherAllowances }}
+                    </td>
+                    <td style="width: 150px">
+                      <span class="p-column-title"> {{ l('TotalSalary') }}</span>
+                      {{ record.employeeInformationMaster.totalSalary }}
+                    </td>
+                    <td style="width: 150px">
+                      <span class="p-column-title"> {{ l('Photo') }}</span>
+                      {{ record.employeeInformationMaster.photo }}
+                    </td>
+                    <td style="width: 150px">
+                      <span class="p-column-title"> {{ l('UanNo') }}</span>
+                      {{ record.employeeInformationMaster.uanNo }}
+                    </td>
+                    <td style="width: 150px">
+                      <span class="p-column-title"> {{ l('IsActive') }}</span>
+                      <div *ngIf="record.employeeInformationMaster.isActive" class="text-center">
+                        <i class="fa fa-check-circle text-success" title="True"></i>
+                      </div>
+                      <div *ngIf="!record.employeeInformationMaster.isActive" class="text-center">
+                        <i class="fa fa-times-circle" title="False"></i>
+                      </div>
+                    </td>
+                    <td style="width: 150px">
+                      <span class="p-column-title"> {{ l('EmployeementUnder') }}</span>
+                      {{ record.employeeInformationMaster.employeementUnder }}
+                    </td>
+                    <td style="width: 150px">
+                      <span class="p-column-title"> {{ l('Division') }}</span>
+                      {{ record.employeeInformationMaster.division }}
+                    </td>
+                    <td style="width: 150px">
+                      <span class="p-column-title"> {{ l('ContractorId') }}</span>
+                      {{ record.employeeInformationMaster.contractorId }}
+                    </td>
+                    <td style="width: 150px">
+                      <span class="p-column-title"> {{ l('MessBill') }}</span>
+                      <div *ngIf="record.employeeInformationMaster.messBill" class="text-center">
+                        <i class="fa fa-check-circle text-success" title="True"></i>
+                      </div>
+                      <div *ngIf="!record.employeeInformationMaster.messBill" class="text-center">
+                        <i class="fa fa-times-circle" title="False"></i>
+                      </div>
+                    </td>
+                    <td style="width: 150px">
+                      <span class="p-column-title"> {{ l('Onroll') }}</span>
+                      <div *ngIf="record.employeeInformationMaster.onroll" class="text-center">
+                        <i class="fa fa-check-circle text-success" title="True"></i>
+                      </div>
+                      <div *ngIf="!record.employeeInformationMaster.onroll" class="text-center">
+                        <i class="fa fa-times-circle" title="False"></i>
+                      </div>
+                    </td>
+                    <td style="width: 150px">
+                      <span class="p-column-title"> {{ l('NameInTelugu') }}</span>
+                      {{ record.employeeInformationMaster.nameInTelugu }}
+                    </td>
+                    <td style="width: 150px">
+                      <span class="p-column-title"> {{ l('RjDate') }}</span>
+                      <span *ngIf="record.employeeInformationMaster.rjDate">
+                        {{ record.employeeInformationMaster.rjDate | luxonFormat: 'F' }}
+                      </span>
+                      <span *ngIf="!record.employeeInformationMaster.rjDate">-</span>
+                    </td>
+                    <td style="width: 150px">
+                      <span class="p-column-title"> {{ l('Document') }}</span>
+                      {{ record.employeeInformationMaster.document }}
+                    </td>
+                    <td style="width: 150px">
+                      <span class="p-column-title"> {{ l('Extension') }}</span>
+                      {{ record.employeeInformationMaster.extension }}
+                    </td>
+                  </tr>
+                </ng-template>
+              </p-table>
+              <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                {{ l('NoData') }}
+              </div>
+              <div class="primeng-paging-container">
+                <p-paginator
+                  [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                  #paginator
+                  (onPageChange)="getEmployeeInformationMasters($event)"
+                  [totalRecords]="primengTableHelper.totalRecordsCount"
+                  [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                  [showCurrentPageReport]="true"
+                  [currentPageReportTemplate]="'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount"
+                >
+                </p-paginator>
+              </div>
+            </div>
+            <!--<Primeng-Datatable-End>-->
+          </div>
+        </div>
+      </div>
+    </div>
+    <createOrEditEmployeeInformationMasterModal
+      #createOrEditEmployeeInformationMasterModal
+      (modalSave)="getEmployeeInformationMasters()"
+    ></createOrEditEmployeeInformationMasterModal>
+    <viewEmployeeInformationMasterModal #viewEmployeeInformationMasterModal></viewEmployeeInformationMasterModal>
+  </div>
+</div>

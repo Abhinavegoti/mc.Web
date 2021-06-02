@@ -6,6 +6,26 @@
     /// </summary>
     public static class AppPermissions
     {
+        public const string Pages_Designations = "Pages.Designations";
+        public const string Pages_Designations_Create = "Pages.Designations.Create";
+        public const string Pages_Designations_Edit = "Pages.Designations.Edit";
+        public const string Pages_Designations_Delete = "Pages.Designations.Delete";
+
+        public const string Pages_SubDepartments = "Pages.SubDepartments";
+        public const string Pages_SubDepartments_Create = "Pages.SubDepartments.Create";
+        public const string Pages_SubDepartments_Edit = "Pages.SubDepartments.Edit";
+        public const string Pages_SubDepartments_Delete = "Pages.SubDepartments.Delete";
+
+        public const string Pages_Departments = "Pages.Departments";
+        public const string Pages_Departments_Create = "Pages.Departments.Create";
+        public const string Pages_Departments_Edit = "Pages.Departments.Edit";
+        public const string Pages_Departments_Delete = "Pages.Departments.Delete";
+
+        public const string Pages_EmployeeInformationMasters = "Pages.EmployeeInformationMasters";
+        public const string Pages_EmployeeInformationMasters_Create = "Pages.EmployeeInformationMasters.Create";
+        public const string Pages_EmployeeInformationMasters_Edit = "Pages.EmployeeInformationMasters.Edit";
+        public const string Pages_EmployeeInformationMasters_Delete = "Pages.EmployeeInformationMasters.Delete";
+
         //COMMON PERMISSIONS (FOR BOTH OF TENANTS AND HOST)
 
         public const string Pages = "Pages";

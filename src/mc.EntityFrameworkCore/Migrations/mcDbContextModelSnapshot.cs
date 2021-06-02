@@ -1697,6 +1697,207 @@ namespace mc.Migrations
                     b.ToTable("AppChatMessages");
                 });
 
+            modelBuilder.Entity("mc.Departments.Department", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TenantId");
+
+                    b.ToTable("Departments");
+                });
+
+            modelBuilder.Entity("mc.EmployeeInformationMasters.EmployeeInformationMaster", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("AcNo")
+                        .HasMaxLength(14)
+                        .HasColumnType("nvarchar(14)");
+
+                    b.Property<string>("AltContactNo")
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
+
+                    b.Property<string>("BG")
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
+
+                    b.Property<decimal?>("BasicSalary")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<long?>("BioId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int?>("CL")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ConfirmationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ContactNo")
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
+
+                    b.Property<long?>("ContractorId")
+                        .HasColumnType("bigint");
+
+                    b.Property<decimal?>("Conveyance")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal?>("DA")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime?>("DOJ")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Division")
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<DateTime?>("Dob")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("Doc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Document")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("EL")
+                        .HasColumnType("int");
+
+                    b.Property<string>("EmpId")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<string>("EmployeementUnder")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("EsiNo")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Extension")
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<string>("ForH")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Gender")
+                        .HasMaxLength(1)
+                        .HasColumnType("nvarchar(1)");
+
+                    b.Property<decimal?>("HRA")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("IhExp")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<decimal?>("Incentive")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("InternalId")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("MaritalStatus")
+                        .HasMaxLength(1)
+                        .HasColumnType("nvarchar(1)");
+
+                    b.Property<decimal?>("MedicalAllowance")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<bool>("MessBill")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("NameInTelugu")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int?>("NoOfDependents")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Onroll")
+                        .HasColumnType("bit");
+
+                    b.Property<decimal?>("OtherAllowances")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("PAN")
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<string>("PermanentAddress")
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
+                    b.Property<string>("PfNo")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Photo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PpNo")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("PresentAddress")
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
+                    b.Property<DateTime?>("RjDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("SL")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("TenantId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal?>("TotalExp")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal?>("TotalSalary")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int?>("UanNo")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TenantId");
+
+                    b.ToTable("EmployeeInformationMasters");
+                });
+
             modelBuilder.Entity("mc.Friendships.Friendship", b =>
                 {
                     b.Property<long>("Id")
@@ -1989,6 +2190,31 @@ namespace mc.Migrations
                     b.HasIndex("TenantId");
 
                     b.ToTable("AppBinaryObjects");
+                });
+
+            modelBuilder.Entity("mc.SubDepartments.SubDepartment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<int?>("Name")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SubName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name");
+
+                    b.HasIndex("TenantId");
+
+                    b.ToTable("SubDepartments");
                 });
 
             modelBuilder.Entity("mc.Editions.SubscribableEdition", b =>
@@ -2284,6 +2510,15 @@ namespace mc.Migrations
                     b.Navigation("Edition");
 
                     b.Navigation("LastModifierUser");
+                });
+
+            modelBuilder.Entity("mc.SubDepartments.SubDepartment", b =>
+                {
+                    b.HasOne("mc.Departments.Department", "NameFk")
+                        .WithMany()
+                        .HasForeignKey("Name");
+
+                    b.Navigation("NameFk");
                 });
 
             modelBuilder.Entity("Abp.Application.Features.EditionFeatureSetting", b =>
